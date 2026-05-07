@@ -212,18 +212,44 @@ function renderKana(el, l, skill) {
   const sessions = skill === 'hiragana' ? l.hiraganaSessions : l.katakanaSessions;
   const allItems = sessions.reduce((acc, s) => acc.concat(s.items), []);
   
+  // Pola jumlah huruf per baris dalam tabel standar Kana:
+  // Seion: a-o(5), k(5), s(5), t(5), n(5), h(5), m(5), y(3), r(5), w-n(3)
+  // Dakuon: g(5), z(5), d(5), b(5)
+  // Handakuon: p(5)
+  // Yoon: kya(3), sha(3), cha(3), nya(3), hya(3), mya(3), rya(3), gya(3), ja(3), bya(3), pya(3)
+  const KANA_LAYOUT = [5, 5, 5, 5, 5, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3];
+  
+  let layoutHtml = '';
+  let cursor = 0;
+  
+  KANA_LAYOUT.forEach((count, rowIndex) => {
+    if (cursor >= allItems.length) return;
+    const rowItems = allItems.slice(cursor, cursor + count);
+    
+    // Beri judul setiap kategori untuk memudahkan visual (opsional, tapi memperjelas)
+    if (cursor === 0) layoutHtml += `<h3 style="margin-top:20px; color:var(--text-muted)">Seion (Huruf Dasar)</h3>`;
+    if (cursor === 46) layoutHtml += `<h3 style="margin-top:20px; color:var(--text-muted)">Dakuon & Handakuon</h3>`;
+    if (cursor === 71) layoutHtml += `<h3 style="margin-top:20px; color:var(--text-muted)">Yōon (Huruf Gabungan)</h3>`;
+    
+    layoutHtml += `<div class="kana-row" style="display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap;">`;
+    layoutHtml += rowItems.map(k => `
+      <div class="kana-char-card">
+        <div class="char">${k.char}</div>
+        <div class="ro">${k.ro}</div>
+      </div>
+    `).join('');
+    layoutHtml += `</div>`;
+    
+    cursor += count;
+  });
+
   el.innerHTML = `
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:16px;">
       <h2 style="margin:0">${skill === 'hiragana' ? 'Hiragana (ひらがな)' : 'Katakana (カタカナ)'}</h2>
       <button class="btn btn-primary" onclick="window.openSessionModal('${skill}')">Pilih Sesi Quiz 🎮</button>
     </div>
-    <div class="kana-grid">
-      ${allItems.map(k => `
-        <div class="kana-char-card">
-          <div class="char">${k.char}</div>
-          <div class="ro">${k.ro}</div>
-        </div>
-      `).join('')}
+    <div class="kana-chart-container">
+      ${layoutHtml}
     </div>
   `;
 }
