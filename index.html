@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Bunpoin - Aplikasi belajar dan persiapan tes JLPT N5 hingga N1. Latihan Kanji, Grammar, Reading, Listening, dan Writing." />
+  <meta name="keywords" content="JLPT, 日本語, Japanese, N5, N4, N3, N2, N1, Kanji, Grammar, Bunpo, Learning" />
+  <title>Bunpoin - JLPT Preparation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="app"></div>
+  
+  <!-- KANJI MODAL -->
+  <div id="kanji-modal" class="modal-overlay">
+    <div class="modal-content kanji-detail">
+      <button class="close-modal" id="close-kanji-modal">&times;</button>
+      <div class="kanji-large" id="modal-kanji-char">水</div>
+      <div class="kanji-info-section">
+        <p><strong>Arti:</strong> <span id="modal-kanji-meaning">Air</span></p>
+        <p><strong>On'yomi:</strong> <span id="modal-kanji-on">スイ</span></p>
+        <p><strong>Kun'yomi:</strong> <span id="modal-kanji-kun">みず</span></p>
+      </div>
+      <div class="kanji-examples-section">
+        <h3>Contoh Penggunaan</h3>
+        <ul id="modal-kanji-examples">
+          <!-- Examples populated dynamically -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
