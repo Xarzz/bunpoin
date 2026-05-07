@@ -1,4 +1,449 @@
 export const levels = {
+  "kana": {
+    "id": "kana",
+    "label": "Kana",
+    "color": "#ff006e",
+    "title": "Fondasi (Hiragana & Katakana)",
+    "desc": "Langkah pertama sebelum memulai JLPT. Pelajari dan ikuti sesi kuis Hiragana & Katakana dari awal hingga mahir.",
+    "hiraganaSessions": [
+      {
+        "id": 1,
+        "title": "Sesi 1",
+        "items": [
+          {
+            "char": "あ",
+            "ro": "a"
+          },
+          {
+            "char": "い",
+            "ro": "i"
+          },
+          {
+            "char": "う",
+            "ro": "u"
+          },
+          {
+            "char": "え",
+            "ro": "e"
+          },
+          {
+            "char": "お",
+            "ro": "o"
+          },
+          {
+            "char": "か",
+            "ro": "ka"
+          },
+          {
+            "char": "き",
+            "ro": "ki"
+          },
+          {
+            "char": "く",
+            "ro": "ku"
+          },
+          {
+            "char": "け",
+            "ro": "ke"
+          },
+          {
+            "char": "こ",
+            "ro": "ko"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Sesi 2",
+        "items": [
+          {
+            "char": "さ",
+            "ro": "sa"
+          },
+          {
+            "char": "し",
+            "ro": "shi"
+          },
+          {
+            "char": "す",
+            "ro": "su"
+          },
+          {
+            "char": "せ",
+            "ro": "se"
+          },
+          {
+            "char": "そ",
+            "ro": "so"
+          },
+          {
+            "char": "た",
+            "ro": "ta"
+          },
+          {
+            "char": "ち",
+            "ro": "chi"
+          },
+          {
+            "char": "つ",
+            "ro": "tsu"
+          },
+          {
+            "char": "て",
+            "ro": "te"
+          },
+          {
+            "char": "と",
+            "ro": "to"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Sesi 3",
+        "items": [
+          {
+            "char": "な",
+            "ro": "na"
+          },
+          {
+            "char": "に",
+            "ro": "ni"
+          },
+          {
+            "char": "ぬ",
+            "ro": "nu"
+          },
+          {
+            "char": "ね",
+            "ro": "ne"
+          },
+          {
+            "char": "の",
+            "ro": "no"
+          },
+          {
+            "char": "は",
+            "ro": "ha"
+          },
+          {
+            "char": "ひ",
+            "ro": "hi"
+          },
+          {
+            "char": "ふ",
+            "ro": "fu"
+          },
+          {
+            "char": "へ",
+            "ro": "he"
+          },
+          {
+            "char": "ほ",
+            "ro": "ho"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Sesi 4",
+        "items": [
+          {
+            "char": "ま",
+            "ro": "ma"
+          },
+          {
+            "char": "み",
+            "ro": "mi"
+          },
+          {
+            "char": "む",
+            "ro": "mu"
+          },
+          {
+            "char": "め",
+            "ro": "me"
+          },
+          {
+            "char": "も",
+            "ro": "mo"
+          },
+          {
+            "char": "や",
+            "ro": "ya"
+          },
+          {
+            "char": "ゆ",
+            "ro": "yu"
+          },
+          {
+            "char": "よ",
+            "ro": "yo"
+          },
+          {
+            "char": "ら",
+            "ro": "ra"
+          },
+          {
+            "char": "り",
+            "ro": "ri"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Sesi 5",
+        "items": [
+          {
+            "char": "る",
+            "ro": "ru"
+          },
+          {
+            "char": "れ",
+            "ro": "re"
+          },
+          {
+            "char": "ろ",
+            "ro": "ro"
+          },
+          {
+            "char": "わ",
+            "ro": "wa"
+          },
+          {
+            "char": "を",
+            "ro": "wo"
+          },
+          {
+            "char": "ん",
+            "ro": "n"
+          }
+        ]
+      }
+    ],
+    "katakanaSessions": [
+      {
+        "id": 1,
+        "title": "Sesi 1",
+        "items": [
+          {
+            "char": "ア",
+            "ro": "a"
+          },
+          {
+            "char": "イ",
+            "ro": "i"
+          },
+          {
+            "char": "ウ",
+            "ro": "u"
+          },
+          {
+            "char": "エ",
+            "ro": "e"
+          },
+          {
+            "char": "オ",
+            "ro": "o"
+          },
+          {
+            "char": "カ",
+            "ro": "ka"
+          },
+          {
+            "char": "キ",
+            "ro": "ki"
+          },
+          {
+            "char": "ク",
+            "ro": "ku"
+          },
+          {
+            "char": "ケ",
+            "ro": "ke"
+          },
+          {
+            "char": "コ",
+            "ro": "ko"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Sesi 2",
+        "items": [
+          {
+            "char": "サ",
+            "ro": "sa"
+          },
+          {
+            "char": "シ",
+            "ro": "shi"
+          },
+          {
+            "char": "ス",
+            "ro": "su"
+          },
+          {
+            "char": "セ",
+            "ro": "se"
+          },
+          {
+            "char": "ソ",
+            "ro": "so"
+          },
+          {
+            "char": "タ",
+            "ro": "ta"
+          },
+          {
+            "char": "チ",
+            "ro": "chi"
+          },
+          {
+            "char": "ツ",
+            "ro": "tsu"
+          },
+          {
+            "char": "テ",
+            "ro": "te"
+          },
+          {
+            "char": "ト",
+            "ro": "to"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Sesi 3",
+        "items": [
+          {
+            "char": "ナ",
+            "ro": "na"
+          },
+          {
+            "char": "ニ",
+            "ro": "ni"
+          },
+          {
+            "char": "ヌ",
+            "ro": "nu"
+          },
+          {
+            "char": "ネ",
+            "ro": "ne"
+          },
+          {
+            "char": "ノ",
+            "ro": "no"
+          },
+          {
+            "char": "ハ",
+            "ro": "ha"
+          },
+          {
+            "char": "ヒ",
+            "ro": "hi"
+          },
+          {
+            "char": "フ",
+            "ro": "fu"
+          },
+          {
+            "char": "ヘ",
+            "ro": "he"
+          },
+          {
+            "char": "ホ",
+            "ro": "ho"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Sesi 4",
+        "items": [
+          {
+            "char": "マ",
+            "ro": "ma"
+          },
+          {
+            "char": "ミ",
+            "ro": "mi"
+          },
+          {
+            "char": "ム",
+            "ro": "mu"
+          },
+          {
+            "char": "メ",
+            "ro": "me"
+          },
+          {
+            "char": "モ",
+            "ro": "mo"
+          },
+          {
+            "char": "ヤ",
+            "ro": "ya"
+          },
+          {
+            "char": "ユ",
+            "ro": "yu"
+          },
+          {
+            "char": "ヨ",
+            "ro": "yo"
+          },
+          {
+            "char": "ラ",
+            "ro": "ra"
+          },
+          {
+            "char": "リ",
+            "ro": "ri"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Sesi 5",
+        "items": [
+          {
+            "char": "ル",
+            "ro": "ru"
+          },
+          {
+            "char": "レ",
+            "ro": "re"
+          },
+          {
+            "char": "ロ",
+            "ro": "ro"
+          },
+          {
+            "char": "ワ",
+            "ro": "wa"
+          },
+          {
+            "char": "ヲ",
+            "ro": "wo"
+          },
+          {
+            "char": "ン",
+            "ro": "n"
+          }
+        ]
+      }
+    ],
+    "kanji": [],
+    "grammar": [],
+    "quiz": [],
+    "reading": null,
+    "listening": null,
+    "writing": []
+  },
   "n5": {
     "id": "n5",
     "label": "N5",

@@ -31,6 +31,21 @@ window.addEventListener('DOMContentLoaded', () => {
       if (e.target === kanjiModal) kanjiModal.classList.remove('active');
     });
   }
+
+  const sessionModal = document.getElementById('session-modal');
+  const closeSessionModal = document.getElementById('close-session-modal');
+
+  if (closeSessionModal) {
+    closeSessionModal.addEventListener('click', () => {
+      sessionModal.classList.remove('active');
+    });
+  }
+  
+  if (sessionModal) {
+    sessionModal.addEventListener('click', (e) => {
+      if (e.target === sessionModal) sessionModal.classList.remove('active');
+    });
+  }
 });
 
 // ===== RENDER =====
@@ -39,7 +54,7 @@ function render() {
   const [page, ...params] = currentRoute.split('/').filter(Boolean);
 
   if (page && levels[page]) {
-    renderLevelPage(page, params[0] || 'kanji');
+    renderLevelPage(page, params[0] || (page === 'kana' ? 'hiragana' : 'kanji'));
   } else {
     renderHome();
   }
@@ -142,31 +157,45 @@ function renderLevelPage(levelId, activeSkill) {
     <h1>JLPT ${l.label} — ${l.title}</h1>
     <p>${l.desc}</p>
     <div class="stats-bar">
-      <div class="stat-item"><div class="stat-value" style="color:${l.color}">${l.kanjiCount}</div><div class="stat-label">Kanji</div></div>
-      <div class="stat-item"><div class="stat-value" style="color:${l.color}">${l.grammarCount}</div><div class="stat-label">Grammar</div></div>
-      <div class="stat-item"><div class="stat-value" style="color:${l.color}">${l.vocabCount}</div><div class="stat-label">Vocabulary</div></div>
+      ${levelId === 'kana' ? `
+        <div class="stat-item"><div class="stat-value" style="color:${l.color}">104</div><div class="stat-label">Hiragana</div></div>
+        <div class="stat-item"><div class="stat-value" style="color:${l.color}">104</div><div class="stat-label">Katakana</div></div>
+      ` : `
+        <div class="stat-item"><div class="stat-value" style="color:${l.color}">${l.kanjiCount}</div><div class="stat-label">Kanji</div></div>
+        <div class="stat-item"><div class="stat-value" style="color:${l.color}">${l.grammarCount}</div><div class="stat-label">Grammar</div></div>
+        <div class="stat-item"><div class="stat-value" style="color:${l.color}">${l.vocabCount}</div><div class="stat-label">Vocabulary</div></div>
+      `}
     </div>
   </div>
 
   <div class="section" style="--card-accent:${l.color};--card-accent-bg:${l.color}15">
     <div class="skill-tabs">
-      ${['kanji','grammar','quiz','reading','listening','writing'].map(s =>
-        `<button class="skill-tab ${activeSkill === s ? 'active' : ''}" onclick="location.hash='#/${levelId}/${s}'">${s === 'kanji' ? '漢字 Kanji' : s === 'grammar' ? '文法 Grammar' : s === 'quiz' ? '📝 Quiz' : s === 'reading' ? '📖 Reading' : s === 'listening' ? '🎧 Listening' : '✍️ Writing'}</button>`
-      ).join('')}
+      ${levelId === 'kana' ? 
+        ['hiragana', 'katakana'].map(s => `<button class="skill-tab ${activeSkill === s ? 'active' : ''}" onclick="location.hash='#/${levelId}/${s}'">${s === 'hiragana' ? 'あ Hiragana' : 'ア Katakana'}</button>`).join('') :
+        ['kanji','grammar','quiz','reading','listening','writing'].map(s =>
+          `<button class="skill-tab ${activeSkill === s ? 'active' : ''}" onclick="location.hash='#/${levelId}/${s}'">${s === 'kanji' ? '漢字 Kanji' : s === 'grammar' ? '文法 Grammar' : s === 'quiz' ? '📝 Quiz' : s === 'reading' ? '📖 Reading' : s === 'listening' ? '🎧 Listening' : '✍️ Writing'}</button>`
+        ).join('')}
     </div>
     <div class="skill-content" id="skill-content"></div>
   </div>
 
   <footer class="footer"><p>Bunpoin © 2026 — がんばって！</p></footer>`;
 
-  renderSkillContent(levelId, activeSkill);
+  setTimeout(() => {
+    const contentEl = document.getElementById('skill-content');
+    renderSkillContent(contentEl, levelId, activeSkill);
+  }, 0);
 }
 
-function renderSkillContent(levelId, skill) {
+function renderSkillContent(el, levelId, skill) {
   const l = levels[levelId];
-  const el = document.getElementById('skill-content');
   if (!el) return;
   window.__currentLevel = l;
+
+  if (levelId === 'kana') {
+    renderKana(el, l, skill);
+    return;
+  }
 
   switch (skill) {
     case 'kanji': renderKanji(el, l); break;
@@ -179,9 +208,44 @@ function renderSkillContent(levelId, skill) {
   }
 }
 
-function renderKanji(el, l) {
+function renderKana(el, l, skill) {
+  const sessions = skill === 'hiragana' ? l.hiraganaSessions : l.katakanaSessions;
+  const allItems = sessions.reduce((acc, s) => acc.concat(s.items), []);
+  
   el.innerHTML = `
-    <h2 style="margin-bottom:24px">Kanji ${l.label}</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
+      <h2 style="margin:0">${skill === 'hiragana' ? 'Hiragana (ひらがな)' : 'Katakana (カタカナ)'}</h2>
+      <button class="btn btn-primary" onclick="window.openSessionModal('${skill}')">Pilih Sesi Quiz 🎮</button>
+    </div>
+    <div class="kana-grid">
+      ${allItems.map(k => `
+        <div class="kana-char-card">
+          <div class="char">${k.char}</div>
+          <div class="ro">${k.ro}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderKanji(el, l) {
+  if (!l.kanjiSessions) {
+    l.kanjiSessions = [];
+    const chunkSize = 20; 
+    for (let i = 0; i < l.kanji.length; i += chunkSize) {
+      l.kanjiSessions.push({
+        title: 'Sesi Kanji ' + (l.kanjiSessions.length + 1),
+        items: l.kanji.slice(i, i + chunkSize),
+        startIndex: i 
+      });
+    }
+  }
+
+  el.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
+      <h2 style="margin:0">Kanji ${l.label}</h2>
+      <button class="btn btn-primary" onclick="window.openSessionModal('kanji')">Pilih Sesi Quiz 🎮</button>
+    </div>
     <div class="kanji-grid">
       ${l.kanji.map((k, index) => `
         <div class="kanji-card" onclick="window.openKanjiModalStr('${l.id}', ${index})">
@@ -190,8 +254,27 @@ function renderKanji(el, l) {
           <div class="kanji-meaning">${k.meaning}</div>
         </div>
       `).join('')}
-    </div>`;
+    </div>
+  `;
 }
+
+window.openSessionModal = function(skill) {
+  const l = window.__currentLevel;
+  let sessions = [];
+  if (skill === 'hiragana') sessions = l.hiraganaSessions;
+  else if (skill === 'katakana') sessions = l.katakanaSessions;
+  else if (skill === 'kanji') sessions = l.kanjiSessions;
+
+  const sessionListEl = document.getElementById('session-list');
+  sessionListEl.innerHTML = sessions.map((s, idx) => `
+    <button class="session-picker-btn" onclick="document.getElementById('session-modal').classList.remove('active'); startCustomQuiz('${skill}', ${idx});">
+      <span>${s.title}</span>
+      <span class="item-count">${s.items.length} item</span>
+    </button>
+  `).join('');
+
+  document.getElementById('session-modal').classList.add('active');
+};
 
 window.openKanjiModalStr = (levelId, kanjiIndex) => {
   const kanjiData = levels[levelId].kanji[kanjiIndex];
@@ -302,6 +385,102 @@ window.handleAnswer = function(selected, correct) {
     quizState.answered = false;
     renderQuizQuestion(document.getElementById('skill-content'));
   }, 1200);
+};
+
+window.startCustomQuiz = function(skill, sessionIdx) {
+  const l = window.__currentLevel;
+  const isKana = skill === 'hiragana' || skill === 'katakana';
+  let sessionData;
+  if (isKana) {
+    sessionData = skill === 'hiragana' ? l.hiraganaSessions[sessionIdx] : l.katakanaSessions[sessionIdx];
+  } else {
+    // For later implementation of kanji sessions
+    sessionData = l.kanjiSessions[sessionIdx];
+  }
+
+  const items = sessionData.items;
+  const questions = [];
+  
+  // Generate 10 questions dynamically based on the session items
+  if (isKana) {
+    for (let i = 0; i < 10; i++) {
+      const target = items[Math.floor(Math.random() * items.length)];
+      const isRomaji = Math.random() > 0.5;
+      
+      const qText = isRomaji ? `Apa romaji dari 「${target.char}」?` : `Kana mana yang dibaca "${target.ro}"?`;
+      
+      // Pick 3 random distractors from the same session
+      const distractors = new Set();
+      while(distractors.size < 3) {
+        const rand = items[Math.floor(Math.random() * items.length)];
+        if (rand.char !== target.char) distractors.add(isRomaji ? rand.ro : rand.char);
+      }
+      
+      const opts = Array.from(distractors);
+      const correctAns = isRomaji ? target.ro : target.char;
+      
+      // Insert correct answer at random position
+      const ansPos = Math.floor(Math.random() * 4);
+      opts.splice(ansPos, 0, correctAns);
+      
+      questions.push({
+        type: skill.toUpperCase() + ' Sesi ' + (sessionIdx + 1),
+        q: qText,
+        opts: opts,
+        ans: ansPos
+      });
+    }
+  } else {
+    for (let i = 0; i < 10; i++) {
+      // Pick 10 random kanji questions
+      const target = items[Math.floor(Math.random() * items.length)];
+      // Randomize question type: 0 = meaning, 1 = onyomi, 2 = kunyomi
+      const qType = Math.floor(Math.random() * 3);
+      
+      let qText, correctAns;
+      if (qType === 0) {
+        qText = `Apa arti dari Kanji 「${target.char}」?`;
+        correctAns = target.meaning;
+      } else if (qType === 1) {
+        qText = `Bagaimana bacaan On'yomi (音) dari 「${target.char}」?`;
+        correctAns = target.on;
+      } else {
+        qText = `Bagaimana bacaan Kun'yomi (訓) dari 「${target.char}」?`;
+        correctAns = target.kun;
+      }
+      
+      // If it's empty, fallback to meaning
+      if (correctAns === '-') {
+        qText = `Apa arti dari Kanji 「${target.char}」?`;
+        correctAns = target.meaning;
+      }
+      
+      // Pick 3 random distractors
+      const distractors = new Set();
+      while(distractors.size < 3) {
+        const rand = items[Math.floor(Math.random() * items.length)];
+        let wrongOpt = qType === 0 ? rand.meaning : (qType === 1 ? rand.on : rand.kun);
+        if (wrongOpt !== '-' && wrongOpt !== correctAns && rand.char !== target.char) {
+          distractors.add(wrongOpt);
+        }
+      }
+      
+      const opts = Array.from(distractors);
+      const ansPos = Math.floor(Math.random() * 4);
+      opts.splice(ansPos, 0, correctAns);
+      
+      questions.push({
+        type: 'KANJI Sesi ' + (sessionIdx + 1),
+        q: qText,
+        opts: opts,
+        ans: ansPos
+      });
+    }
+  }
+  
+  quizState = { current: 0, score: 0, answered: false, questions: questions };
+  // Render over the skill content
+  renderQuizQuestion(document.getElementById('skill-content'));
 };
 
 function renderReading(el, l) {
