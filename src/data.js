@@ -3126,6 +3126,1574 @@ export const levels = {
             "id": "Sibuk"
           }
         ]
+      },
+      {
+        "id": 21,
+        "title": "Sapaan & Ungkapan (Greetings)",
+        "items": [
+          {
+            "jp": "おはようございます",
+            "ro": "ohayou gozaimasu",
+            "id": "Selamat pagi"
+          },
+          {
+            "jp": "こんにちは",
+            "ro": "konnichiwa",
+            "id": "Selamat siang"
+          },
+          {
+            "jp": "こんばんは",
+            "ro": "konbanwa",
+            "id": "Selamat malam"
+          },
+          {
+            "jp": "さようなら",
+            "ro": "sayounara",
+            "id": "Selamat tinggal"
+          },
+          {
+            "jp": "ありがとうございます",
+            "ro": "arigatou gozaimasu",
+            "id": "Terima kasih"
+          },
+          {
+            "jp": "すみません",
+            "ro": "sumimasen",
+            "id": "Permisi / Maaf"
+          },
+          {
+            "jp": "おねがいします",
+            "ro": "onegaishimasu",
+            "id": "Tolong / Mohon"
+          },
+          {
+            "jp": "いただきます",
+            "ro": "itadakimasu",
+            "id": "Selamat makan"
+          },
+          {
+            "jp": "ごちそうさま",
+            "ro": "gochisousama",
+            "id": "Terima kasih (makanan)"
+          },
+          {
+            "jp": "おやすみなさい",
+            "ro": "oyasuminasai",
+            "id": "Selamat tidur"
+          }
+        ]
+      },
+      {
+        "id": 22,
+        "title": "Kata Tanya (Question Words)",
+        "items": [
+          {
+            "jp": "なに",
+            "ro": "nani",
+            "id": "Apa"
+          },
+          {
+            "jp": "だれ",
+            "ro": "dare",
+            "id": "Siapa"
+          },
+          {
+            "jp": "どこ",
+            "ro": "doko",
+            "id": "Di mana"
+          },
+          {
+            "jp": "いつ",
+            "ro": "itsu",
+            "id": "Kapan"
+          },
+          {
+            "jp": "なぜ",
+            "ro": "naze",
+            "id": "Mengapa"
+          },
+          {
+            "jp": "どう",
+            "ro": "dou",
+            "id": "Bagaimana"
+          },
+          {
+            "jp": "いくら",
+            "ro": "ikura",
+            "id": "Berapa (harga)"
+          },
+          {
+            "jp": "いくつ",
+            "ro": "ikutsu",
+            "id": "Berapa (jumlah)"
+          },
+          {
+            "jp": "どれ",
+            "ro": "dore",
+            "id": "Yang mana"
+          },
+          {
+            "jp": "どちら",
+            "ro": "dochira",
+            "id": "Yang mana (2)"
+          }
+        ]
+      },
+      {
+        "id": 23,
+        "title": "Posisi & Arah (Position)",
+        "items": [
+          {
+            "jp": "うえ",
+            "ro": "ue",
+            "id": "Atas"
+          },
+          {
+            "jp": "した",
+            "ro": "shita",
+            "id": "Bawah"
+          },
+          {
+            "jp": "まえ",
+            "ro": "mae",
+            "id": "Depan"
+          },
+          {
+            "jp": "うしろ",
+            "ro": "ushiro",
+            "id": "Belakang"
+          },
+          {
+            "jp": "みぎ",
+            "ro": "migi",
+            "id": "Kanan"
+          },
+          {
+            "jp": "ひだり",
+            "ro": "hidari",
+            "id": "Kiri"
+          },
+          {
+            "jp": "なか",
+            "ro": "naka",
+            "id": "Dalam"
+          },
+          {
+            "jp": "そと",
+            "ro": "soto",
+            "id": "Luar"
+          },
+          {
+            "jp": "となり",
+            "ro": "tonari",
+            "id": "Sebelah"
+          },
+          {
+            "jp": "ちかく",
+            "ro": "chikaku",
+            "id": "Dekat"
+          }
+        ]
+      },
+      {
+        "id": 24,
+        "title": "Waktu Lanjut (Time 2)",
+        "items": [
+          {
+            "jp": "あさ",
+            "ro": "asa",
+            "id": "Pagi"
+          },
+          {
+            "jp": "ひる",
+            "ro": "hiru",
+            "id": "Siang"
+          },
+          {
+            "jp": "よる",
+            "ro": "yoru",
+            "id": "Malam"
+          },
+          {
+            "jp": "ゆうがた",
+            "ro": "yuugata",
+            "id": "Sore"
+          },
+          {
+            "jp": "まいしゅう",
+            "ro": "maishuu",
+            "id": "Setiap minggu"
+          },
+          {
+            "jp": "まいつき",
+            "ro": "maitsuki",
+            "id": "Setiap bulan"
+          },
+          {
+            "jp": "まいとし",
+            "ro": "maitoshi",
+            "id": "Setiap tahun"
+          },
+          {
+            "jp": "せんしゅう",
+            "ro": "senshuu",
+            "id": "Minggu lalu"
+          },
+          {
+            "jp": "らいしゅう",
+            "ro": "raishuu",
+            "id": "Minggu depan"
+          },
+          {
+            "jp": "ことし",
+            "ro": "kotoshi",
+            "id": "Tahun ini"
+          }
+        ]
+      },
+      {
+        "id": 25,
+        "title": "Musim & Cuaca (Seasons)",
+        "items": [
+          {
+            "jp": "はる",
+            "ro": "haru",
+            "id": "Musim semi"
+          },
+          {
+            "jp": "なつ",
+            "ro": "natsu",
+            "id": "Musim panas"
+          },
+          {
+            "jp": "あき",
+            "ro": "aki",
+            "id": "Musim gugur"
+          },
+          {
+            "jp": "ふゆ",
+            "ro": "fuyu",
+            "id": "Musim dingin"
+          },
+          {
+            "jp": "くもり",
+            "ro": "kumori",
+            "id": "Mendung"
+          },
+          {
+            "jp": "はれ",
+            "ro": "hare",
+            "id": "Cerah"
+          },
+          {
+            "jp": "たいふう",
+            "ro": "taifuu",
+            "id": "Topan"
+          },
+          {
+            "jp": "あたたかい",
+            "ro": "atatakai",
+            "id": "Hangat"
+          },
+          {
+            "jp": "すずしい",
+            "ro": "suzushii",
+            "id": "Sejuk"
+          },
+          {
+            "jp": "むしあつい",
+            "ro": "mushiatsui",
+            "id": "Gerah / Lembap"
+          }
+        ]
+      },
+      {
+        "id": 26,
+        "title": "Alat Tulis & Kantor (Stationery)",
+        "items": [
+          {
+            "jp": "かみ",
+            "ro": "kami",
+            "id": "Kertas"
+          },
+          {
+            "jp": "ペン",
+            "ro": "pen",
+            "id": "Pena"
+          },
+          {
+            "jp": "はさみ",
+            "ro": "hasami",
+            "id": "Gunting"
+          },
+          {
+            "jp": "のり",
+            "ro": "nori",
+            "id": "Lem"
+          },
+          {
+            "jp": "ものさし",
+            "ro": "monosashi",
+            "id": "Penggaris"
+          },
+          {
+            "jp": "ホッチキス",
+            "ro": "hotchikisu",
+            "id": "Stapler"
+          },
+          {
+            "jp": "ふうとう",
+            "ro": "fuutou",
+            "id": "Amplop"
+          },
+          {
+            "jp": "きって",
+            "ro": "kitte",
+            "id": "Perangko"
+          },
+          {
+            "jp": "はがき",
+            "ro": "hagaki",
+            "id": "Kartu pos"
+          },
+          {
+            "jp": "てがみ",
+            "ro": "tegami",
+            "id": "Surat"
+          }
+        ]
+      },
+      {
+        "id": 27,
+        "title": "Buah-buahan (Fruits)",
+        "items": [
+          {
+            "jp": "りんご",
+            "ro": "ringo",
+            "id": "Apel"
+          },
+          {
+            "jp": "バナナ",
+            "ro": "banana",
+            "id": "Pisang"
+          },
+          {
+            "jp": "みかん",
+            "ro": "mikan",
+            "id": "Jeruk mandarin"
+          },
+          {
+            "jp": "ぶどう",
+            "ro": "budou",
+            "id": "Anggur"
+          },
+          {
+            "jp": "いちご",
+            "ro": "ichigo",
+            "id": "Stroberi"
+          },
+          {
+            "jp": "すいか",
+            "ro": "suika",
+            "id": "Semangka"
+          },
+          {
+            "jp": "もも",
+            "ro": "momo",
+            "id": "Persik"
+          },
+          {
+            "jp": "レモン",
+            "ro": "remon",
+            "id": "Lemon"
+          },
+          {
+            "jp": "メロン",
+            "ro": "meron",
+            "id": "Melon"
+          },
+          {
+            "jp": "なし",
+            "ro": "nashi",
+            "id": "Pir Jepang"
+          }
+        ]
+      },
+      {
+        "id": 28,
+        "title": "Minuman & Makanan 2 (Food 2)",
+        "items": [
+          {
+            "jp": "コーヒー",
+            "ro": "ko-hi-",
+            "id": "Kopi"
+          },
+          {
+            "jp": "ジュース",
+            "ro": "ju-su",
+            "id": "Jus"
+          },
+          {
+            "jp": "ビール",
+            "ro": "bi-ru",
+            "id": "Bir"
+          },
+          {
+            "jp": "おさけ",
+            "ro": "osake",
+            "id": "Sake / Alkohol"
+          },
+          {
+            "jp": "ケーキ",
+            "ro": "ke-ki",
+            "id": "Kue"
+          },
+          {
+            "jp": "チョコレート",
+            "ro": "chokore-to",
+            "id": "Cokelat"
+          },
+          {
+            "jp": "おかし",
+            "ro": "okashi",
+            "id": "Camilan"
+          },
+          {
+            "jp": "サンドイッチ",
+            "ro": "sandoicchi",
+            "id": "Sandwich"
+          },
+          {
+            "jp": "カレー",
+            "ro": "kare-",
+            "id": "Kari"
+          },
+          {
+            "jp": "おべんとう",
+            "ro": "obentou",
+            "id": "Bekal makan"
+          }
+        ]
+      },
+      {
+        "id": 29,
+        "title": "Kata Kerja Harian (Daily Verbs)",
+        "items": [
+          {
+            "jp": "あらう",
+            "ro": "arau",
+            "id": "Mencuci"
+          },
+          {
+            "jp": "きる",
+            "ro": "kiru",
+            "id": "Memakai (baju)"
+          },
+          {
+            "jp": "ぬぐ",
+            "ro": "nugu",
+            "id": "Melepas (baju)"
+          },
+          {
+            "jp": "かける",
+            "ro": "kakeru",
+            "id": "Memakai (kacamata)"
+          },
+          {
+            "jp": "はく",
+            "ro": "haku",
+            "id": "Memakai (celana/sepatu)"
+          },
+          {
+            "jp": "かぶる",
+            "ro": "kaburu",
+            "id": "Memakai (topi)"
+          },
+          {
+            "jp": "とる",
+            "ro": "toru",
+            "id": "Mengambil"
+          },
+          {
+            "jp": "おく",
+            "ro": "oku",
+            "id": "Meletakkan"
+          },
+          {
+            "jp": "もつ",
+            "ro": "motsu",
+            "id": "Memegang / Membawa"
+          },
+          {
+            "jp": "つかう",
+            "ro": "tsukau",
+            "id": "Menggunakan"
+          }
+        ]
+      },
+      {
+        "id": 30,
+        "title": "Kata Kerja Sosial (Social Verbs)",
+        "items": [
+          {
+            "jp": "あげる",
+            "ro": "ageru",
+            "id": "Memberi"
+          },
+          {
+            "jp": "もらう",
+            "ro": "morau",
+            "id": "Menerima"
+          },
+          {
+            "jp": "くれる",
+            "ro": "kureru",
+            "id": "Memberi (ke saya)"
+          },
+          {
+            "jp": "てつだう",
+            "ro": "tetsudau",
+            "id": "Membantu"
+          },
+          {
+            "jp": "たのむ",
+            "ro": "tanomu",
+            "id": "Meminta tolong"
+          },
+          {
+            "jp": "こたえる",
+            "ro": "kotaeru",
+            "id": "Menjawab"
+          },
+          {
+            "jp": "しつもん",
+            "ro": "shitsumon",
+            "id": "Pertanyaan"
+          },
+          {
+            "jp": "でかける",
+            "ro": "dekakeru",
+            "id": "Pergi keluar"
+          },
+          {
+            "jp": "つれていく",
+            "ro": "tsureteiku",
+            "id": "Membawa (orang)"
+          },
+          {
+            "jp": "もっていく",
+            "ro": "motteiku",
+            "id": "Membawa (benda)"
+          }
+        ]
+      },
+      {
+        "id": 31,
+        "title": "Kata Keterangan (Adverbs)",
+        "items": [
+          {
+            "jp": "とても",
+            "ro": "totemo",
+            "id": "Sangat"
+          },
+          {
+            "jp": "すこし",
+            "ro": "sukoshi",
+            "id": "Sedikit"
+          },
+          {
+            "jp": "たくさん",
+            "ro": "takusan",
+            "id": "Banyak"
+          },
+          {
+            "jp": "いつも",
+            "ro": "itsumo",
+            "id": "Selalu"
+          },
+          {
+            "jp": "ときどき",
+            "ro": "tokidoki",
+            "id": "Kadang-kadang"
+          },
+          {
+            "jp": "よく",
+            "ro": "yoku",
+            "id": "Sering"
+          },
+          {
+            "jp": "まだ",
+            "ro": "mada",
+            "id": "Masih / Belum"
+          },
+          {
+            "jp": "もう",
+            "ro": "mou",
+            "id": "Sudah"
+          },
+          {
+            "jp": "たぶん",
+            "ro": "tabun",
+            "id": "Mungkin"
+          },
+          {
+            "jp": "ぜんぜん",
+            "ro": "zenzen",
+            "id": "Sama sekali tidak"
+          }
+        ]
+      },
+      {
+        "id": 32,
+        "title": "Kata Keterangan 2 (Adverbs 2)",
+        "items": [
+          {
+            "jp": "はじめて",
+            "ro": "hajimete",
+            "id": "Pertama kali"
+          },
+          {
+            "jp": "だんだん",
+            "ro": "dandan",
+            "id": "Pelan-pelan / Makin"
+          },
+          {
+            "jp": "すぐ",
+            "ro": "sugu",
+            "id": "Segera"
+          },
+          {
+            "jp": "ゆっくり",
+            "ro": "yukkuri",
+            "id": "Pelan-pelan"
+          },
+          {
+            "jp": "いっしょに",
+            "ro": "issho ni",
+            "id": "Bersama"
+          },
+          {
+            "jp": "ひとりで",
+            "ro": "hitori de",
+            "id": "Sendirian"
+          },
+          {
+            "jp": "もちろん",
+            "ro": "mochiron",
+            "id": "Tentu saja"
+          },
+          {
+            "jp": "けっして",
+            "ro": "kesshite",
+            "id": "Tidak pernah"
+          },
+          {
+            "jp": "たいてい",
+            "ro": "taitei",
+            "id": "Biasanya"
+          },
+          {
+            "jp": "ちょうど",
+            "ro": "choudo",
+            "id": "Tepat"
+          }
+        ]
+      },
+      {
+        "id": 33,
+        "title": "Angka 2 & Penghitung (Counters)",
+        "items": [
+          {
+            "jp": "ろく",
+            "ro": "roku",
+            "id": "Enam"
+          },
+          {
+            "jp": "しち",
+            "ro": "shichi",
+            "id": "Tujuh"
+          },
+          {
+            "jp": "はち",
+            "ro": "hachi",
+            "id": "Delapan"
+          },
+          {
+            "jp": "きゅう",
+            "ro": "kyuu",
+            "id": "Sembilan"
+          },
+          {
+            "jp": "じゅう",
+            "ro": "juu",
+            "id": "Sepuluh"
+          },
+          {
+            "jp": "ひゃく",
+            "ro": "hyaku",
+            "id": "Seratus"
+          },
+          {
+            "jp": "せん",
+            "ro": "sen",
+            "id": "Seribu"
+          },
+          {
+            "jp": "まん",
+            "ro": "man",
+            "id": "Sepuluh ribu"
+          },
+          {
+            "jp": "ひとつ",
+            "ro": "hitotsu",
+            "id": "Satu (umum)"
+          },
+          {
+            "jp": "ふたつ",
+            "ro": "futatsu",
+            "id": "Dua (umum)"
+          }
+        ]
+      },
+      {
+        "id": 34,
+        "title": "Penghitung 2 (Counters 2)",
+        "items": [
+          {
+            "jp": "みっつ",
+            "ro": "mittsu",
+            "id": "Tiga (umum)"
+          },
+          {
+            "jp": "よっつ",
+            "ro": "yottsu",
+            "id": "Empat (umum)"
+          },
+          {
+            "jp": "いつつ",
+            "ro": "itsutsu",
+            "id": "Lima (umum)"
+          },
+          {
+            "jp": "いっぽん",
+            "ro": "ippon",
+            "id": "Satu (panjang)"
+          },
+          {
+            "jp": "にほん",
+            "ro": "nihon",
+            "id": "Dua (panjang)"
+          },
+          {
+            "jp": "いちまい",
+            "ro": "ichimai",
+            "id": "Satu (lembar)"
+          },
+          {
+            "jp": "にまい",
+            "ro": "nimai",
+            "id": "Dua (lembar)"
+          },
+          {
+            "jp": "ひとり",
+            "ro": "hitori",
+            "id": "Satu orang"
+          },
+          {
+            "jp": "ふたり",
+            "ro": "futari",
+            "id": "Dua orang"
+          },
+          {
+            "jp": "いっさつ",
+            "ro": "issatsu",
+            "id": "Satu (buku)"
+          }
+        ]
+      },
+      {
+        "id": 35,
+        "title": "Olahraga & Kegiatan (Sports)",
+        "items": [
+          {
+            "jp": "サッカー",
+            "ro": "sakka-",
+            "id": "Sepak bola"
+          },
+          {
+            "jp": "やきゅう",
+            "ro": "yakyuu",
+            "id": "Bisbol"
+          },
+          {
+            "jp": "テニス",
+            "ro": "tenisu",
+            "id": "Tenis"
+          },
+          {
+            "jp": "すいえい",
+            "ro": "suiei",
+            "id": "Renang"
+          },
+          {
+            "jp": "ジョギング",
+            "ro": "jogingu",
+            "id": "Jogging"
+          },
+          {
+            "jp": "スキー",
+            "ro": "suki-",
+            "id": "Ski"
+          },
+          {
+            "jp": "ダンス",
+            "ro": "dansu",
+            "id": "Dansa"
+          },
+          {
+            "jp": "しあい",
+            "ro": "shiai",
+            "id": "Pertandingan"
+          },
+          {
+            "jp": "れんしゅう",
+            "ro": "renshuu",
+            "id": "Latihan"
+          },
+          {
+            "jp": "たいいく",
+            "ro": "taiiku",
+            "id": "Olahraga (pelajaran)"
+          }
+        ]
+      },
+      {
+        "id": 36,
+        "title": "Benda Sehari-hari (Everyday Items)",
+        "items": [
+          {
+            "jp": "さいふ",
+            "ro": "saifu",
+            "id": "Dompet"
+          },
+          {
+            "jp": "かぎ",
+            "ro": "kagi",
+            "id": "Kunci"
+          },
+          {
+            "jp": "ハンカチ",
+            "ro": "hankachi",
+            "id": "Sapu tangan"
+          },
+          {
+            "jp": "ティッシュ",
+            "ro": "tisshu",
+            "id": "Tisu"
+          },
+          {
+            "jp": "タオル",
+            "ro": "taoru",
+            "id": "Handuk"
+          },
+          {
+            "jp": "せっけん",
+            "ro": "sekken",
+            "id": "Sabun"
+          },
+          {
+            "jp": "はブラシ",
+            "ro": "haburashi",
+            "id": "Sikat gigi"
+          },
+          {
+            "jp": "くすり",
+            "ro": "kusuri",
+            "id": "Obat"
+          },
+          {
+            "jp": "おかね",
+            "ro": "okane",
+            "id": "Uang"
+          },
+          {
+            "jp": "でんわ",
+            "ro": "denwa",
+            "id": "Telepon"
+          }
+        ]
+      },
+      {
+        "id": 37,
+        "title": "Kata Sifat Na (Na-Adjectives)",
+        "items": [
+          {
+            "jp": "げんき",
+            "ro": "genki",
+            "id": "Sehat / Semangat"
+          },
+          {
+            "jp": "しずか",
+            "ro": "shizuka",
+            "id": "Tenang"
+          },
+          {
+            "jp": "にぎやか",
+            "ro": "nigiyaka",
+            "id": "Ramai"
+          },
+          {
+            "jp": "きれい",
+            "ro": "kirei",
+            "id": "Cantik / Bersih"
+          },
+          {
+            "jp": "ゆうめい",
+            "ro": "yuumei",
+            "id": "Terkenal"
+          },
+          {
+            "jp": "べんり",
+            "ro": "benri",
+            "id": "Praktis"
+          },
+          {
+            "jp": "たいへん",
+            "ro": "taihen",
+            "id": "Sulit / Berat"
+          },
+          {
+            "jp": "だいじょうぶ",
+            "ro": "daijoubu",
+            "id": "Tidak apa-apa"
+          },
+          {
+            "jp": "じょうず",
+            "ro": "jouzu",
+            "id": "Pandai"
+          },
+          {
+            "jp": "へた",
+            "ro": "heta",
+            "id": "Tidak pandai"
+          }
+        ]
+      },
+      {
+        "id": 38,
+        "title": "Kata Sifat Na 2",
+        "items": [
+          {
+            "jp": "すき",
+            "ro": "suki",
+            "id": "Suka"
+          },
+          {
+            "jp": "きらい",
+            "ro": "kirai",
+            "id": "Benci / Tidak suka"
+          },
+          {
+            "jp": "じょうぶ",
+            "ro": "joubu",
+            "id": "Kuat / Tahan lama"
+          },
+          {
+            "jp": "ひま",
+            "ro": "hima",
+            "id": "Senggang"
+          },
+          {
+            "jp": "かんたん",
+            "ro": "kantan",
+            "id": "Mudah / Simpel"
+          },
+          {
+            "jp": "だいじ",
+            "ro": "daiji",
+            "id": "Penting"
+          },
+          {
+            "jp": "いろいろ",
+            "ro": "iroiro",
+            "id": "Bermacam-macam"
+          },
+          {
+            "jp": "ハンサム",
+            "ro": "hansamu",
+            "id": "Tampan"
+          },
+          {
+            "jp": "しんせつ",
+            "ro": "shinsetsu",
+            "id": "Baik hati"
+          },
+          {
+            "jp": "ざんねん",
+            "ro": "zannen",
+            "id": "Sayang sekali"
+          }
+        ]
+      },
+      {
+        "id": 39,
+        "title": "Partikel & Konjungsi (Particles)",
+        "items": [
+          {
+            "jp": "しかし",
+            "ro": "shikashi",
+            "id": "Namun / Tetapi"
+          },
+          {
+            "jp": "そして",
+            "ro": "soshite",
+            "id": "Dan / Lalu"
+          },
+          {
+            "jp": "でも",
+            "ro": "demo",
+            "id": "Tapi"
+          },
+          {
+            "jp": "それから",
+            "ro": "sorekara",
+            "id": "Setelah itu"
+          },
+          {
+            "jp": "だから",
+            "ro": "dakara",
+            "id": "Karena itu"
+          },
+          {
+            "jp": "または",
+            "ro": "matawa",
+            "id": "Atau"
+          },
+          {
+            "jp": "それとも",
+            "ro": "soretomo",
+            "id": "Atau (pilihan)"
+          },
+          {
+            "jp": "けれども",
+            "ro": "keredomo",
+            "id": "Meskipun"
+          },
+          {
+            "jp": "つまり",
+            "ro": "tsumari",
+            "id": "Dengan kata lain"
+          },
+          {
+            "jp": "ところで",
+            "ro": "tokorode",
+            "id": "Ngomong-ngomong"
+          }
+        ]
+      },
+      {
+        "id": 40,
+        "title": "Kata Kerja Gerakan (Movement)",
+        "items": [
+          {
+            "jp": "のる",
+            "ro": "noru",
+            "id": "Naik (kendaraan)"
+          },
+          {
+            "jp": "おりる",
+            "ro": "oriru",
+            "id": "Turun (kendaraan)"
+          },
+          {
+            "jp": "わたる",
+            "ro": "wataru",
+            "id": "Menyeberang"
+          },
+          {
+            "jp": "まがる",
+            "ro": "magaru",
+            "id": "Berbelok"
+          },
+          {
+            "jp": "とまる",
+            "ro": "tomaru",
+            "id": "Berhenti"
+          },
+          {
+            "jp": "のぼる",
+            "ro": "noboru",
+            "id": "Mendaki / Naik"
+          },
+          {
+            "jp": "すわる",
+            "ro": "suwaru",
+            "id": "Duduk"
+          },
+          {
+            "jp": "たつ",
+            "ro": "tatsu",
+            "id": "Berdiri"
+          },
+          {
+            "jp": "はいる",
+            "ro": "hairu",
+            "id": "Masuk"
+          },
+          {
+            "jp": "でる",
+            "ro": "deru",
+            "id": "Keluar"
+          }
+        ]
+      },
+      {
+        "id": 41,
+        "title": "Elektronik (Electronics)",
+        "items": [
+          {
+            "jp": "カメラ",
+            "ro": "kamera",
+            "id": "Kamera"
+          },
+          {
+            "jp": "ラジオ",
+            "ro": "rajio",
+            "id": "Radio"
+          },
+          {
+            "jp": "ビデオ",
+            "ro": "bideo",
+            "id": "Video"
+          },
+          {
+            "jp": "テープ",
+            "ro": "te-pu",
+            "id": "Kaset"
+          },
+          {
+            "jp": "シーディー",
+            "ro": "shi-di-",
+            "id": "CD"
+          },
+          {
+            "jp": "コンピューター",
+            "ro": "konpyu-ta-",
+            "id": "Komputer"
+          },
+          {
+            "jp": "でんき",
+            "ro": "denki",
+            "id": "Listrik"
+          },
+          {
+            "jp": "スイッチ",
+            "ro": "suicchi",
+            "id": "Sakelar"
+          },
+          {
+            "jp": "コピー",
+            "ro": "kopi-",
+            "id": "Fotokopi"
+          },
+          {
+            "jp": "じどうはんばいき",
+            "ro": "jidouhanbaiki",
+            "id": "Mesin penjual otomatis"
+          }
+        ]
+      },
+      {
+        "id": 42,
+        "title": "Bangunan & Struktur (Buildings)",
+        "items": [
+          {
+            "jp": "たてもの",
+            "ro": "tatemono",
+            "id": "Bangunan"
+          },
+          {
+            "jp": "アパート",
+            "ro": "apa-to",
+            "id": "Apartemen"
+          },
+          {
+            "jp": "マンション",
+            "ro": "manshon",
+            "id": "Kondominium"
+          },
+          {
+            "jp": "びじゅつかん",
+            "ro": "bijutsukan",
+            "id": "Museum seni"
+          },
+          {
+            "jp": "はくぶつかん",
+            "ro": "hakubutsukan",
+            "id": "Museum"
+          },
+          {
+            "jp": "じんじゃ",
+            "ro": "jinja",
+            "id": "Kuil Shinto"
+          },
+          {
+            "jp": "おてら",
+            "ro": "otera",
+            "id": "Kuil Buddha"
+          },
+          {
+            "jp": "きょうかい",
+            "ro": "kyoukai",
+            "id": "Gereja"
+          },
+          {
+            "jp": "こうじょう",
+            "ro": "koujou",
+            "id": "Pabrik"
+          },
+          {
+            "jp": "たいしかん",
+            "ro": "taishikan",
+            "id": "Kedutaan"
+          }
+        ]
+      },
+      {
+        "id": 43,
+        "title": "Makanan Jepang (Japanese Food)",
+        "items": [
+          {
+            "jp": "すし",
+            "ro": "sushi",
+            "id": "Sushi"
+          },
+          {
+            "jp": "てんぷら",
+            "ro": "tenpura",
+            "id": "Tempura"
+          },
+          {
+            "jp": "ラーメン",
+            "ro": "ra-men",
+            "id": "Ramen"
+          },
+          {
+            "jp": "うどん",
+            "ro": "udon",
+            "id": "Udon"
+          },
+          {
+            "jp": "そば",
+            "ro": "soba",
+            "id": "Soba"
+          },
+          {
+            "jp": "みそしる",
+            "ro": "misoshiru",
+            "id": "Sup miso"
+          },
+          {
+            "jp": "やきにく",
+            "ro": "yakiniku",
+            "id": "Daging panggang"
+          },
+          {
+            "jp": "おにぎり",
+            "ro": "onigiri",
+            "id": "Nasi kepal"
+          },
+          {
+            "jp": "とうふ",
+            "ro": "toufu",
+            "id": "Tahu"
+          },
+          {
+            "jp": "しょうゆ",
+            "ro": "shouyu",
+            "id": "Kecap Jepang"
+          }
+        ]
+      },
+      {
+        "id": 44,
+        "title": "Keseharian di Rumah (Home Life)",
+        "items": [
+          {
+            "jp": "そうじ",
+            "ro": "souji",
+            "id": "Bersih-bersih"
+          },
+          {
+            "jp": "せんたく",
+            "ro": "sentaku",
+            "id": "Mencuci baju"
+          },
+          {
+            "jp": "りょうり",
+            "ro": "ryouri",
+            "id": "Masakan"
+          },
+          {
+            "jp": "かいもの",
+            "ro": "kaimono",
+            "id": "Belanja"
+          },
+          {
+            "jp": "シャワー",
+            "ro": "shawa-",
+            "id": "Shower"
+          },
+          {
+            "jp": "しょくじ",
+            "ro": "shokuji",
+            "id": "Makan (formal)"
+          },
+          {
+            "jp": "あさごはん",
+            "ro": "asagohan",
+            "id": "Sarapan"
+          },
+          {
+            "jp": "ひるごはん",
+            "ro": "hirugohan",
+            "id": "Makan siang"
+          },
+          {
+            "jp": "ばんごはん",
+            "ro": "bangohan",
+            "id": "Makan malam"
+          },
+          {
+            "jp": "おやつ",
+            "ro": "oyatsu",
+            "id": "Camilan sore"
+          }
+        ]
+      },
+      {
+        "id": 45,
+        "title": "Mata Pelajaran (School Subjects)",
+        "items": [
+          {
+            "jp": "さんすう",
+            "ro": "sansuu",
+            "id": "Matematika"
+          },
+          {
+            "jp": "りか",
+            "ro": "rika",
+            "id": "IPA"
+          },
+          {
+            "jp": "しゃかい",
+            "ro": "shakai",
+            "id": "IPS"
+          },
+          {
+            "jp": "こくご",
+            "ro": "kokugo",
+            "id": "Bahasa Jepang"
+          },
+          {
+            "jp": "えいご",
+            "ro": "eigo",
+            "id": "Bahasa Inggris"
+          },
+          {
+            "jp": "おんがく",
+            "ro": "ongaku",
+            "id": "Musik"
+          },
+          {
+            "jp": "びじゅつ",
+            "ro": "bijutsu",
+            "id": "Seni rupa"
+          },
+          {
+            "jp": "たいいく",
+            "ro": "taiiku",
+            "id": "Olahraga"
+          },
+          {
+            "jp": "かてい",
+            "ro": "katei",
+            "id": "Ekonomi rumah tangga"
+          },
+          {
+            "jp": "ぎじゅつ",
+            "ro": "gijutsu",
+            "id": "Teknologi"
+          }
+        ]
+      },
+      {
+        "id": 46,
+        "title": "Perasaan Dasar (Basic Feelings)",
+        "items": [
+          {
+            "jp": "うれしい",
+            "ro": "ureshii",
+            "id": "Senang"
+          },
+          {
+            "jp": "かなしい",
+            "ro": "kanashii",
+            "id": "Sedih"
+          },
+          {
+            "jp": "おもしろい",
+            "ro": "omoshiroi",
+            "id": "Menarik / Lucu"
+          },
+          {
+            "jp": "つまらない",
+            "ro": "tsumaranai",
+            "id": "Membosankan"
+          },
+          {
+            "jp": "こわい",
+            "ro": "kowai",
+            "id": "Takut"
+          },
+          {
+            "jp": "さびしい",
+            "ro": "sabishii",
+            "id": "Kesepian"
+          },
+          {
+            "jp": "つかれた",
+            "ro": "tsukareta",
+            "id": "Lelah"
+          },
+          {
+            "jp": "ねむい",
+            "ro": "nemui",
+            "id": "Ngantuk"
+          },
+          {
+            "jp": "おなかがすいた",
+            "ro": "onaka ga suita",
+            "id": "Lapar"
+          },
+          {
+            "jp": "のどがかわいた",
+            "ro": "nodo ga kawaita",
+            "id": "Haus"
+          }
+        ]
+      },
+      {
+        "id": 47,
+        "title": "Hubungan Sosial (Social)",
+        "items": [
+          {
+            "jp": "かいわ",
+            "ro": "kaiwa",
+            "id": "Percakapan"
+          },
+          {
+            "jp": "やくそく",
+            "ro": "yakusoku",
+            "id": "Janji"
+          },
+          {
+            "jp": "パーティー",
+            "ro": "pa-ti-",
+            "id": "Pesta"
+          },
+          {
+            "jp": "プレゼント",
+            "ro": "purezento",
+            "id": "Hadiah"
+          },
+          {
+            "jp": "たんじょうび",
+            "ro": "tanjoubi",
+            "id": "Ulang tahun"
+          },
+          {
+            "jp": "おまつり",
+            "ro": "omatsuri",
+            "id": "Festival"
+          },
+          {
+            "jp": "しょうたい",
+            "ro": "shoutai",
+            "id": "Undangan"
+          },
+          {
+            "jp": "ひっこし",
+            "ro": "hikkoshi",
+            "id": "Pindah rumah"
+          },
+          {
+            "jp": "あいさつ",
+            "ro": "aisatsu",
+            "id": "Salam"
+          },
+          {
+            "jp": "おれい",
+            "ro": "orei",
+            "id": "Ucapan terima kasih"
+          }
+        ]
+      },
+      {
+        "id": 48,
+        "title": "Kata Kerja Emosi (Emotion Verbs)",
+        "items": [
+          {
+            "jp": "わらう",
+            "ro": "warau",
+            "id": "Tertawa"
+          },
+          {
+            "jp": "なく",
+            "ro": "naku",
+            "id": "Menangis"
+          },
+          {
+            "jp": "おこる",
+            "ro": "okoru",
+            "id": "Marah"
+          },
+          {
+            "jp": "よろこぶ",
+            "ro": "yorokobu",
+            "id": "Bergembira"
+          },
+          {
+            "jp": "おどろく",
+            "ro": "odoroku",
+            "id": "Terkejut"
+          },
+          {
+            "jp": "しんじる",
+            "ro": "shinjiru",
+            "id": "Percaya"
+          },
+          {
+            "jp": "こまる",
+            "ro": "komaru",
+            "id": "Bingung / Susah"
+          },
+          {
+            "jp": "がんばる",
+            "ro": "ganbaru",
+            "id": "Berusaha keras"
+          },
+          {
+            "jp": "あきらめる",
+            "ro": "akirameru",
+            "id": "Menyerah"
+          },
+          {
+            "jp": "なやむ",
+            "ro": "nayamu",
+            "id": "Bimbang"
+          }
+        ]
       }
     ]
   },
