@@ -720,6 +720,15 @@ body {
   font-weight: 700;
   color: var(--text-primary);
 }
+.tts-btn {
+  font-size: 0.75rem;
+  opacity: 0.4;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.vocab-item:hover .tts-btn {
+  opacity: 1;
+}
 .vocab-ro {
   font-size: 0.8rem;
   color: var(--accent-blue);

@@ -1,5 +1,80 @@
 import { levels } from './data.js';
 
+// ===== TTS (Text-to-Speech) =====
+window.speakJP = function(text) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ja-JP';
+  u.rate = 0.85;
+  u.pitch = 1;
+  speechSynthesis.speak(u);
+};
+
+// ===== CONFETTI =====
+function launchConfetti() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'confetti-canvas';
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const colors = ['#f43f5e','#f59e0b','#10b981','#3b82f6','#8b5cf6','#ec4899'];
+  const particles = Array.from({length: 120}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height - canvas.height,
+    w: Math.random() * 8 + 4,
+    h: Math.random() * 4 + 2,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    vy: Math.random() * 3 + 2,
+    vx: (Math.random() - 0.5) * 2,
+    rot: Math.random() * 360,
+    rv: (Math.random() - 0.5) * 10
+  }));
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.y += p.vy; p.x += p.vx; p.rot += p.rv;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+    });
+    frame++;
+    if (frame < 180) requestAnimationFrame(draw);
+    else canvas.remove();
+  }
+  draw();
+}
+
+// ===== LOCAL STORAGE PROGRESS =====
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem('bunpoin_progress') || '{}'); } catch { return {}; }
+}
+function saveProgress(data) {
+  const p = getProgress();
+  Object.assign(p, data);
+  // Update streak
+  const today = new Date().toDateString();
+  if (p.lastStudy !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    p.streak = (p.lastStudy === yesterday) ? (p.streak || 0) + 1 : 1;
+    p.lastStudy = today;
+  }
+  localStorage.setItem('bunpoin_progress', JSON.stringify(p));
+}
+function recordQuizDone(skill, sessionIdx, score, total) {
+  const p = getProgress();
+  if (!p.quizzes) p.quizzes = [];
+  p.quizzes.push({ skill, sessionIdx, score, total, pct: Math.round(score/total*100), date: new Date().toISOString() });
+  p.totalQuizzes = (p.totalQuizzes || 0) + 1;
+  saveProgress(p);
+}
+
 // Simple hash router
 let currentRoute = '';
 const app = document.getElementById('app');
@@ -329,8 +404,8 @@ function renderVocab(el, l) {
           </div>
           <div class="vocab-items-list">
             ${session.items.map(item => `
-              <div class="vocab-item">
-                <span class="vocab-jp">${item.jp}</span>
+              <div class="vocab-item" onclick="speakJP('${item.jp.replace(/'/g, "\\'")}')">  
+                <span class="vocab-jp">${item.jp} <span class="tts-btn">🔊</span></span>
                 <span class="vocab-ro">${item.ro}</span>
                 <span class="vocab-id">${item.id}</span>
               </div>
@@ -447,6 +522,11 @@ function renderQuizQuestion(el) {
     } else {
       retryAction = `renderQuiz(document.getElementById('skill-content'), window.__currentLevel)`;
     }
+
+    // Save progress
+    recordQuizDone(skill, sessionIdx, score, questions.length);
+    saveProgress({});
+    if (pct >= 80) setTimeout(() => launchConfetti(), 300);
 
     el.innerHTML = `
       <div class="quiz-result">
@@ -791,6 +871,10 @@ function renderTryoutPage() {
 
 // ===== PROFILE PAGE =====
 function renderProfilePage() {
+  const p = getProgress();
+  const streak = p.streak || 0;
+  const totalQ = p.totalQuizzes || 0;
+
   app.innerHTML = `
     <div class="profile-page">
       <div class="profile-card">
@@ -799,11 +883,11 @@ function renderProfilePage() {
         <div class="profile-subtitle">Mulai perjalanan JLPT-mu!</div>
         <div class="profile-stats">
           <div class="profile-stat">
-            <div class="profile-stat-value">0</div>
+            <div class="profile-stat-value">${streak}</div>
             <div class="profile-stat-label">Hari Streak</div>
           </div>
           <div class="profile-stat">
-            <div class="profile-stat-value">0</div>
+            <div class="profile-stat-value">${totalQ}</div>
             <div class="profile-stat-label">Quiz Selesai</div>
           </div>
           <div class="profile-stat">
