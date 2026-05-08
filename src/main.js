@@ -353,23 +353,49 @@ function renderGrammar(el, l) {
 }
 
 // Quiz state
-let quizState = { current: 0, score: 0, answered: false, questions: [] };
+let quizState = { current: 0, score: 0, answered: false, questions: [], isCustom: false, skill: null, sessionIdx: null };
 
 function renderQuiz(el, l) {
-  quizState = { current: 0, score: 0, answered: false, questions: [...l.quiz].sort(() => Math.random() - 0.5) };
+  quizState = { current: 0, score: 0, answered: false, questions: [...l.quiz].sort(() => Math.random() - 0.5), isCustom: false, skill: 'quiz', sessionIdx: null };
   renderQuizQuestion(el);
 }
 
 function renderQuizQuestion(el) {
-  const { current, questions, score } = quizState;
+  const { current, questions, score, isCustom, skill, sessionIdx } = quizState;
   if (current >= questions.length) {
     const pct = Math.round((score / questions.length) * 100);
+    
+    let extraButtons = '';
+    let retryAction = '';
+    
+    if (isCustom) {
+      retryAction = `startCustomQuiz('${skill}', ${sessionIdx})`;
+      
+      const l = window.__currentLevel;
+      let totalSessions = 0;
+      if (skill === 'hiragana') totalSessions = l.hiraganaSessions.length;
+      else if (skill === 'katakana') totalSessions = l.katakanaSessions.length;
+      else if (skill === 'kanji') totalSessions = l.kanjiSessions.length;
+      
+      if (sessionIdx + 1 < totalSessions) {
+        extraButtons += `<button class="btn btn-primary" onclick="startCustomQuiz('${skill}', ${sessionIdx + 1})">Lanjut Sesi Berikutnya ⏭️</button>`;
+      }
+      extraButtons += `<button class="btn btn-outline" onclick="window.openSessionModal('${skill}')">Pilih Sesi Lain 📋</button>`;
+      // Button to go back to chart view
+      extraButtons += `<button class="btn btn-outline" onclick="renderSkillContent(document.getElementById('skill-content'), '${l.id}', '${skill}')">Kembali ke Daftar</button>`;
+    } else {
+      retryAction = `renderQuiz(document.getElementById('skill-content'), window.__currentLevel)`;
+    }
+
     el.innerHTML = `
       <div class="quiz-result">
         <div class="result-score">${pct}%</div>
         <h2>${pct >= 80 ? '素晴らしい！ Amazing!' : pct >= 60 ? 'いいですね！ Good job!' : 'もう少し！ Keep trying!'}</h2>
         <p>Skor: ${score} / ${questions.length}</p>
-        <button class="btn btn-primary" onclick="document.getElementById('skill-content') && renderQuiz(document.getElementById('skill-content'), window.__currentLevel)">Coba Lagi 🔄</button>
+        <div style="display:flex; flex-direction:column; gap:12px; margin-top:24px; max-width:300px; margin-left:auto; margin-right:auto;">
+          <button class="btn ${isCustom ? 'btn-outline' : 'btn-primary'}" onclick="${retryAction}">Coba Lagi 🔄</button>
+          ${extraButtons}
+        </div>
       </div>`;
     return;
   }
@@ -504,7 +530,7 @@ window.startCustomQuiz = function(skill, sessionIdx) {
     }
   }
   
-  quizState = { current: 0, score: 0, answered: false, questions: questions };
+  quizState = { current: 0, score: 0, answered: false, questions: questions, isCustom: true, skill: skill, sessionIdx: sessionIdx };
   // Render over the skill content
   renderQuizQuestion(document.getElementById('skill-content'));
 };
