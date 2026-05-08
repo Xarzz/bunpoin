@@ -172,8 +172,8 @@ function renderLevelPage(levelId, activeSkill) {
     <div class="skill-tabs">
       ${levelId === 'kana' ? 
         ['hiragana', 'katakana'].map(s => `<button class="skill-tab ${activeSkill === s ? 'active' : ''}" onclick="location.hash='#/${levelId}/${s}'">${s === 'hiragana' ? 'あ Hiragana' : 'ア Katakana'}</button>`).join('') :
-        ['kanji','grammar','quiz','reading','listening','writing'].map(s =>
-          `<button class="skill-tab ${activeSkill === s ? 'active' : ''}" onclick="location.hash='#/${levelId}/${s}'">${s === 'kanji' ? '漢字 Kanji' : s === 'grammar' ? '文法 Grammar' : s === 'quiz' ? '📝 Quiz' : s === 'reading' ? '📖 Reading' : s === 'listening' ? '🎧 Listening' : '✍️ Writing'}</button>`
+        ['kanji','vocab','grammar','quiz','reading','listening','writing'].map(s =>
+          `<button class="skill-tab ${activeSkill === s ? 'active' : ''}" onclick="location.hash='#/${levelId}/${s}'">${s === 'kanji' ? '漢字 Kanji' : s === 'vocab' ? '📚 Vocab' : s === 'grammar' ? '文法 Grammar' : s === 'quiz' ? '📝 Quiz' : s === 'reading' ? '📖 Reading' : s === 'listening' ? '🎧 Listening' : '✍️ Writing'}</button>`
         ).join('')}
     </div>
     <div class="skill-content" id="skill-content"></div>
@@ -199,6 +199,7 @@ function renderSkillContent(el, levelId, skill) {
 
   switch (skill) {
     case 'kanji': renderKanji(el, l); break;
+    case 'vocab': renderVocab(el, l); break;
     case 'grammar': renderGrammar(el, l); break;
     case 'quiz': renderQuiz(el, l); break;
     case 'reading': renderReading(el, l); break;
@@ -284,12 +285,48 @@ function renderKanji(el, l) {
   `;
 }
 
+// ===== VOCAB =====
+function renderVocab(el, l) {
+  if (!l.vocabSessions || l.vocabSessions.length === 0) {
+    el.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:40px;">Belum ada data kosakata untuk level ini.</p>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
+      <h2 style="margin:0">Kosakata ${l.label}</h2>
+      <button class="btn btn-primary" onclick="window.openSessionModal('vocab')">Mulai Drilling Quiz</button>
+    </div>
+    <div class="vocab-topics-grid">
+      ${l.vocabSessions.map((session, sIdx) => `
+        <div class="vocab-topic-card">
+          <div class="vocab-topic-header">
+            <h3>${session.title}</h3>
+            <span class="vocab-topic-count">${session.items.length} kata</span>
+          </div>
+          <div class="vocab-items-list">
+            ${session.items.map(item => `
+              <div class="vocab-item">
+                <span class="vocab-jp">${item.jp}</span>
+                <span class="vocab-ro">${item.ro}</span>
+                <span class="vocab-id">${item.id}</span>
+              </div>
+            `).join('')}
+          </div>
+          <button class="btn btn-info btn-sm" style="width:100%; margin-top:12px;" onclick="startCustomQuiz('vocab', ${sIdx})">Quiz Topik Ini</button>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
 window.openSessionModal = function(skill) {
   const l = window.__currentLevel;
   let sessions = [];
   if (skill === 'hiragana') sessions = l.hiraganaSessions;
   else if (skill === 'katakana') sessions = l.katakanaSessions;
   else if (skill === 'kanji') sessions = l.kanjiSessions;
+  else if (skill === 'vocab') sessions = l.vocabSessions || [];
 
   const sessionListEl = document.getElementById('session-list');
   sessionListEl.innerHTML = sessions.map((s, idx) => `
@@ -376,11 +413,12 @@ function renderQuizQuestion(el) {
       if (skill === 'hiragana') totalSessions = l.hiraganaSessions.length;
       else if (skill === 'katakana') totalSessions = l.katakanaSessions.length;
       else if (skill === 'kanji') totalSessions = l.kanjiSessions.length;
+      else if (skill === 'vocab') totalSessions = (l.vocabSessions || []).length;
       
       if (sessionIdx + 1 < totalSessions) {
-        extraButtons += `<button class="btn btn-info" onclick="startCustomQuiz('${skill}', ${sessionIdx + 1})">Lanjut Sesi Berikutnya ⏭️</button>`;
+        extraButtons += `<button class="btn btn-info" onclick="startCustomQuiz('${skill}', ${sessionIdx + 1})">Lanjut Sesi Berikutnya</button>`;
       }
-      extraButtons += `<button class="btn btn-outline" onclick="window.openSessionModal('${skill}')">Pilih Sesi Lain 📋</button>`;
+      extraButtons += `<button class="btn btn-outline" onclick="window.openSessionModal('${skill}')">Pilih Sesi Lain</button>`;
       // Button to go back to chart view
       extraButtons += `<button class="btn btn-outline" onclick="renderSkillContent(document.getElementById('skill-content'), '${l.id}', '${skill}')">Kembali ke Daftar</button>`;
     } else {
@@ -393,7 +431,7 @@ function renderQuizQuestion(el) {
         <h2>${pct >= 80 ? '素晴らしい！ Amazing!' : pct >= 60 ? 'いいですね！ Good job!' : 'もう少し！ Keep trying!'}</h2>
         <p>Skor: ${score} / ${questions.length}</p>
         <div style="display:flex; flex-direction:column; gap:12px; margin-top:24px; max-width:300px; margin-left:auto; margin-right:auto; align-items:center;">
-          <button class="btn ${isCustom ? 'btn-success' : 'btn-primary'}" style="width:100%;" onclick="${retryAction}">Coba Lagi 🔄</button>
+          <button class="btn ${isCustom ? 'btn-success' : 'btn-primary'}" style="width:100%;" onclick="${retryAction}">Coba Lagi</button>
           ${extraButtons.replace(/<button class="btn/g, '<button class="btn" style="width:100%;"')}
         </div>
       </div>`;
@@ -442,11 +480,19 @@ window.handleAnswer = function(selected, correct) {
 window.startCustomQuiz = function(skill, sessionIdx) {
   const l = window.__currentLevel;
   const isKana = skill === 'hiragana' || skill === 'katakana';
+  const isVocab = skill === 'vocab';
+  const sessions = isKana 
+    ? (skill === 'hiragana' ? l.hiraganaSessions : l.katakanaSessions)
+    : isVocab
+      ? (l.vocabSessions || [])
+      : l.kanjiSessions;
+
   let sessionData;
   if (isKana) {
     sessionData = skill === 'hiragana' ? l.hiraganaSessions[sessionIdx] : l.katakanaSessions[sessionIdx];
+  } else if (isVocab) {
+    sessionData = l.vocabSessions[sessionIdx];
   } else {
-    // For later implementation of kanji sessions
     sessionData = l.kanjiSessions[sessionIdx];
   }
 
@@ -528,8 +574,35 @@ window.startCustomQuiz = function(skill, sessionIdx) {
         ans: ansPos
       });
     }
+  } else if (skill === 'vocab') {
+    // Vocab quiz: tampilkan arti Indonesia, jawab dengan bahasa Jepang
+    for (let i = 0; i < Math.min(items.length, 10); i++) {
+      const target = items[i];
+      
+      // Pick 3 random distractors from ALL vocab sessions
+      const allVocab = (l.vocabSessions || []).reduce((acc, s) => acc.concat(s.items), []);
+      const distractors = new Set();
+      while(distractors.size < 3) {
+        const rand = allVocab[Math.floor(Math.random() * allVocab.length)];
+        if (rand.jp !== target.jp) {
+          distractors.add(rand.jp);
+        }
+      }
+      
+      const opts = Array.from(distractors);
+      const ansPos = Math.floor(Math.random() * 4);
+      opts.splice(ansPos, 0, target.jp);
+      
+      questions.push({
+        type: sessions[sessionIdx].title,
+        q: `Apa bahasa Jepang dari "${target.id}"?`,
+        opts: opts,
+        ans: ansPos
+      });
+    }
+    // Shuffle
+    questions.sort(() => Math.random() - 0.5);
   }
-  
   quizState = { current: 0, score: 0, answered: false, questions: questions, isCustom: true, skill: skill, sessionIdx: sessionIdx };
   // Render over the skill content
   renderQuizQuestion(document.getElementById('skill-content'));
