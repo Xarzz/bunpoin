@@ -1,30 +1,30 @@
 /* ============ DESIGN SYSTEM ============ */
 :root {
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-card: #1a1a2e;
-  --bg-card-hover: #222240;
-  --surface: rgba(255,255,255,0.04);
-  --border: rgba(255,255,255,0.08);
-  --border-hover: rgba(255,255,255,0.15);
-  --text-primary: #f0f0f5;
-  --text-secondary: #8888aa;
-  --text-muted: #555570;
-  --accent-red: #e63946;
-  --accent-red-glow: rgba(230,57,70,0.3);
-  --accent-gold: #f4a261;
-  --accent-blue: #457b9d;
-  --accent-teal: #2ec4b6;
-  --accent-purple: #7b2ff7;
-  --n5: #2ec4b6;
-  --n4: #4895ef;
-  --n3: #f4a261;
-  --n2: #e63946;
-  --n1: #7b2ff7;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --radius-xs: 6px;
-  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --surface: #f1f5f9;
+  --border: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --accent-red: #f43f5e;
+  --accent-red-glow: rgba(244, 63, 94, 0.2);
+  --accent-gold: #f59e0b;
+  --accent-blue: #3b82f6;
+  --accent-teal: #10b981;
+  --accent-purple: #8b5cf6;
+  --n5: #1cb0f6;
+  --n4: #10b981;
+  --n3: #f59e0b;
+  --n2: #f97316;
+  --n1: #f43f5e;
+  --radius: 24px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
   --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
   --font-main: 'Inter', sans-serif;
   --font-jp: 'Noto Sans JP', sans-serif;
@@ -53,7 +53,7 @@ body {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 clamp(16px,4vw,48px); height: 64px;
-  background: rgba(10,10,15,0.8); backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
 }
 .nav-logo {
@@ -149,7 +149,7 @@ body {
 /* ============ FLOATING KANJI BG ============ */
 .floating-kanji {
   position: absolute; font-family: var(--font-jp); font-size: 4rem;
-  color: rgba(255,255,255,0.025); font-weight: 900;
+  color: rgba(0,0,0,0.03); font-weight: 900;
   pointer-events: none; user-select: none;
   animation: floatKanji 20s ease-in-out infinite;
 }
