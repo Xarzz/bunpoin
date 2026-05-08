@@ -65,7 +65,7 @@ function render() {
 function navbar(activeLevel) {
   return `
   <nav class="navbar">
-    <div class="nav-logo" onclick="location.hash='#/'"><span class="logo-icon">🔴</span> Bunpoin</div>
+    <div class="nav-logo" onclick="location.hash='#/'">Bunpoin</div>
     <div class="nav-links">
       <a onclick="location.hash='#/'" class="${!activeLevel ? 'active' : ''}">Home</a>
       ${Object.values(levels).map(l =>
@@ -378,7 +378,7 @@ function renderQuizQuestion(el) {
       else if (skill === 'kanji') totalSessions = l.kanjiSessions.length;
       
       if (sessionIdx + 1 < totalSessions) {
-        extraButtons += `<button class="btn btn-primary" onclick="startCustomQuiz('${skill}', ${sessionIdx + 1})">Lanjut Sesi Berikutnya ⏭️</button>`;
+        extraButtons += `<button class="btn btn-info" onclick="startCustomQuiz('${skill}', ${sessionIdx + 1})">Lanjut Sesi Berikutnya ⏭️</button>`;
       }
       extraButtons += `<button class="btn btn-outline" onclick="window.openSessionModal('${skill}')">Pilih Sesi Lain 📋</button>`;
       // Button to go back to chart view
@@ -392,9 +392,9 @@ function renderQuizQuestion(el) {
         <div class="result-score">${pct}%</div>
         <h2>${pct >= 80 ? '素晴らしい！ Amazing!' : pct >= 60 ? 'いいですね！ Good job!' : 'もう少し！ Keep trying!'}</h2>
         <p>Skor: ${score} / ${questions.length}</p>
-        <div style="display:flex; flex-direction:column; gap:12px; margin-top:24px; max-width:300px; margin-left:auto; margin-right:auto;">
-          <button class="btn ${isCustom ? 'btn-outline' : 'btn-primary'}" onclick="${retryAction}">Coba Lagi 🔄</button>
-          ${extraButtons}
+        <div style="display:flex; flex-direction:column; gap:12px; margin-top:24px; max-width:300px; margin-left:auto; margin-right:auto; align-items:center;">
+          <button class="btn ${isCustom ? 'btn-success' : 'btn-primary'}" style="width:100%;" onclick="${retryAction}">Coba Lagi 🔄</button>
+          ${extraButtons.replace(/<button class="btn/g, '<button class="btn" style="width:100%;"')}
         </div>
       </div>`;
     return;
