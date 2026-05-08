@@ -528,6 +528,34 @@ window.startCustomQuiz = function(skill, sessionIdx) {
         ans: ansPos
       });
     }
+  } else if (isVocab) {
+    // Vocab quiz: tampilkan arti Indonesia, jawab dengan bahasa Jepang
+    for (let i = 0; i < Math.min(items.length, 10); i++) {
+      const target = items[i];
+      
+      // Pick 3 random distractors from ALL vocab sessions
+      const allVocab = (l.vocabSessions || []).reduce((acc, s) => acc.concat(s.items), []);
+      const distractors = new Set();
+      while(distractors.size < 3) {
+        const rand = allVocab[Math.floor(Math.random() * allVocab.length)];
+        if (rand.jp !== target.jp) {
+          distractors.add(rand.jp);
+        }
+      }
+      
+      const opts = Array.from(distractors);
+      const ansPos = Math.floor(Math.random() * 4);
+      opts.splice(ansPos, 0, target.jp);
+      
+      questions.push({
+        type: sessions[sessionIdx].title,
+        q: `Apa bahasa Jepang dari "${target.id}"?`,
+        opts: opts,
+        ans: ansPos
+      });
+    }
+    // Shuffle
+    questions.sort(() => Math.random() - 0.5);
   } else {
     for (let i = 0; i < 10; i++) {
       // Pick 10 random kanji questions
@@ -574,34 +602,6 @@ window.startCustomQuiz = function(skill, sessionIdx) {
         ans: ansPos
       });
     }
-  } else if (skill === 'vocab') {
-    // Vocab quiz: tampilkan arti Indonesia, jawab dengan bahasa Jepang
-    for (let i = 0; i < Math.min(items.length, 10); i++) {
-      const target = items[i];
-      
-      // Pick 3 random distractors from ALL vocab sessions
-      const allVocab = (l.vocabSessions || []).reduce((acc, s) => acc.concat(s.items), []);
-      const distractors = new Set();
-      while(distractors.size < 3) {
-        const rand = allVocab[Math.floor(Math.random() * allVocab.length)];
-        if (rand.jp !== target.jp) {
-          distractors.add(rand.jp);
-        }
-      }
-      
-      const opts = Array.from(distractors);
-      const ansPos = Math.floor(Math.random() * 4);
-      opts.splice(ansPos, 0, target.jp);
-      
-      questions.push({
-        type: sessions[sessionIdx].title,
-        q: `Apa bahasa Jepang dari "${target.id}"?`,
-        opts: opts,
-        ans: ansPos
-      });
-    }
-    // Shuffle
-    questions.sort(() => Math.random() - 0.5);
   }
   quizState = { current: 0, score: 0, answered: false, questions: questions, isCustom: true, skill: skill, sessionIdx: sessionIdx };
   // Render over the skill content
