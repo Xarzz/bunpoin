@@ -1175,3 +1175,151 @@ body { padding-bottom: 72px; }
   background: var(--accent-primary);
   transition: width 0.3s ease;
 }
+
+/* ============ ONBOARDING ============ */
+.onboarding-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.onboarding-overlay.show { opacity: 1; }
+.onboarding-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 40px 32px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+  transform: translateY(20px);
+  transition: transform 0.4s ease;
+}
+.onboarding-overlay.show .onboarding-card { transform: translateY(0); }
+.onboarding-slide {
+  display: none;
+  animation: fadeSlide 0.3s ease;
+}
+.onboarding-slide.active { display: block; }
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.onboarding-emoji {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+.onboarding-card h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.onboarding-card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.onboarding-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+.onboarding-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: var(--transition);
+}
+.onboarding-dots .dot.active {
+  background: var(--accent-primary);
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* ============ ACHIEVEMENT TOAST ============ */
+.achievement-toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120px);
+  z-index: 9999;
+  background: var(--bg-card);
+  border: 2px solid var(--accent-amber);
+  border-radius: var(--radius-sm);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  max-width: 360px;
+  width: 90%;
+}
+.achievement-toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+.achievement-toast-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+/* ============ ACHIEVEMENT GRID (Profile) ============ */
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.achievement-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 12px;
+  text-align: center;
+  transition: var(--transition);
+}
+.achievement-item.unlocked {
+  border-color: var(--accent-amber);
+  background: rgba(245,158,11,0.06);
+}
+.achievement-item.locked {
+  opacity: 0.4;
+  filter: grayscale(1);
+}
+.achievement-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+.achievement-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.achievement-desc {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ============ SHARE BUTTON ============ */
+.btn-share {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-share:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+}

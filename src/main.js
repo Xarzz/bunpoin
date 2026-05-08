@@ -91,6 +91,108 @@ window.toggleDarkMode = function() {
 };
 initDarkMode();
 
+// ===== ACHIEVEMENTS =====
+const ACHIEVEMENTS = [
+  { id: 'first_quiz', icon: '🎯', title: 'Quiz Pertama', desc: 'Selesaikan quiz pertamamu', check: p => (p.totalQuizzes || 0) >= 1 },
+  { id: 'quiz_5', icon: '📝', title: 'Rajin Berlatih', desc: 'Selesaikan 5 quiz', check: p => (p.totalQuizzes || 0) >= 5 },
+  { id: 'quiz_20', icon: '🔥', title: 'Quiz Master', desc: 'Selesaikan 20 quiz', check: p => (p.totalQuizzes || 0) >= 20 },
+  { id: 'perfect', icon: '💯', title: 'Perfect Score!', desc: 'Dapatkan skor 100% di quiz', check: p => (p.quizzes || []).some(q => q.pct === 100) },
+  { id: 'streak_3', icon: '⚡', title: '3 Hari Berturut', desc: 'Belajar 3 hari berturut-turut', check: p => (p.streak || 0) >= 3 },
+  { id: 'streak_7', icon: '🏆', title: 'Seminggu Penuh!', desc: 'Belajar 7 hari berturut-turut', check: p => (p.streak || 0) >= 7 },
+  { id: 'high_score', icon: '⭐', title: 'Bintang!', desc: 'Skor 80% atau lebih di 5 quiz', check: p => (p.quizzes || []).filter(q => q.pct >= 80).length >= 5 },
+  { id: 'streak_30', icon: '👑', title: 'Legendaris!', desc: 'Belajar 30 hari berturut-turut', check: p => (p.streak || 0) >= 30 },
+];
+
+function checkAchievements() {
+  const p = getProgress();
+  if (!p.unlockedBadges) p.unlockedBadges = [];
+  let newBadge = null;
+  ACHIEVEMENTS.forEach(a => {
+    if (!p.unlockedBadges.includes(a.id) && a.check(p)) {
+      p.unlockedBadges.push(a.id);
+      newBadge = a;
+    }
+  });
+  localStorage.setItem('bunpoin_progress', JSON.stringify(p));
+  if (newBadge) showAchievementToast(newBadge);
+}
+
+function showAchievementToast(badge) {
+  const toast = document.createElement('div');
+  toast.className = 'achievement-toast';
+  toast.innerHTML = `
+    <div class="achievement-toast-icon">${badge.icon}</div>
+    <div><strong>${badge.title}</strong><br><span style="font-size:0.75rem;color:var(--text-muted)">${badge.desc}</span></div>
+  `;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3000);
+}
+
+// ===== SHARE SCORE =====
+window.shareScore = function(pct, score, total) {
+  const text = `🎌 Bunpoin JLPT Quiz\n📊 Skor: ${score}/${total} (${pct}%)\n${pct >= 80 ? '🏆 Amazing!' : pct >= 60 ? '👍 Good job!' : '💪 Keep going!'}\n\nBelajar JLPT gratis di:`;
+  const url = 'https://bunpoin.vercel.app';
+  if (navigator.share) {
+    navigator.share({ title: 'Bunpoin Quiz Result', text, url }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(text + '\n' + url).then(() => alert('Hasil quiz berhasil dicopy! 📋'));
+  }
+};
+
+// ===== ONBOARDING =====
+function showOnboarding() {
+  if (localStorage.getItem('bunpoin_onboarded')) return;
+  const overlay = document.createElement('div');
+  overlay.className = 'onboarding-overlay';
+  overlay.innerHTML = `
+    <div class="onboarding-card">
+      <div class="onboarding-slides" id="onboarding-slides">
+        <div class="onboarding-slide active" data-slide="0">
+          <div class="onboarding-emoji">🎌</div>
+          <h2>Selamat Datang di Bunpoin!</h2>
+          <p>Platform belajar bahasa Jepang gratis untuk persiapan JLPT N5 — N1</p>
+        </div>
+        <div class="onboarding-slide" data-slide="1">
+          <div class="onboarding-emoji">📚</div>
+          <h2>Belajar Terstruktur</h2>
+          <p>Ikuti alur belajar dari Hiragana sampai Grammar, atau bebas pilih materi di Tryout</p>
+        </div>
+        <div class="onboarding-slide" data-slide="2">
+          <div class="onboarding-emoji">🏆</div>
+          <h2>Raih Achievement!</h2>
+          <p>Selesaikan quiz, kumpulkan badge, dan jaga streak harianmu</p>
+        </div>
+      </div>
+      <div class="onboarding-dots">
+        <span class="dot active" data-d="0"></span>
+        <span class="dot" data-d="1"></span>
+        <span class="dot" data-d="2"></span>
+      </div>
+      <button class="btn btn-primary onboarding-btn" id="onboarding-next" style="width:100%;margin-top:24px;">Lanjut</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => overlay.classList.add('show'));
+
+  let currentSlide = 0;
+  document.getElementById('onboarding-next').addEventListener('click', () => {
+    currentSlide++;
+    if (currentSlide >= 3) {
+      localStorage.setItem('bunpoin_onboarded', 'true');
+      overlay.classList.remove('show');
+      setTimeout(() => overlay.remove(), 400);
+      saveProgress({});
+      return;
+    }
+    overlay.querySelectorAll('.onboarding-slide').forEach(s => s.classList.remove('active'));
+    overlay.querySelector(`[data-slide="${currentSlide}"]`).classList.add('active');
+    overlay.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+    overlay.querySelector(`[data-d="${currentSlide}"]`).classList.add('active');
+    if (currentSlide === 2) document.getElementById('onboarding-next').textContent = 'Mulai Belajar! 🚀';
+  });
+}
+
 // ===== FLASHCARD MODE =====
 window.openFlashcards = function(levelId) {
   const l = levels[levelId];
@@ -159,6 +261,7 @@ function getRoute() {
 window.addEventListener('hashchange', () => render());
 window.addEventListener('DOMContentLoaded', () => {
   render();
+  showOnboarding();
   
   // Initialize Modal Listeners
   const kanjiModal = document.getElementById('kanji-modal');
@@ -599,6 +702,7 @@ function renderQuizQuestion(el) {
     recordQuizDone(skill, sessionIdx, score, questions.length);
     saveProgress({});
     if (pct >= 80) setTimeout(() => launchConfetti(), 300);
+    setTimeout(() => checkAchievements(), 500);
 
     el.innerHTML = `
       <div class="quiz-result">
@@ -606,6 +710,7 @@ function renderQuizQuestion(el) {
         <h2>${pct >= 80 ? '素晴らしい！ Amazing!' : pct >= 60 ? 'いいですね！ Good job!' : 'もう少し！ Keep trying!'}</h2>
         <p>Skor: ${score} / ${questions.length}</p>
         <div style="display:flex; flex-direction:column; gap:12px; margin-top:24px; max-width:300px; margin-left:auto; margin-right:auto; align-items:center;">
+          <button class="btn btn-share" style="width:100%;" onclick="shareScore(${pct}, ${score}, ${questions.length})">📤 Share Hasil</button>
           <button class="btn ${isCustom ? 'btn-success' : 'btn-primary'}" style="width:100%;" onclick="${retryAction}">Coba Lagi</button>
           ${extraButtons.replace(/<button class="btn/g, '<button class="btn" style="width:100%;"')}
         </div>
@@ -966,6 +1071,18 @@ function renderProfilePage() {
             <div class="profile-stat-value">N5</div>
             <div class="profile-stat-label">Level Saat Ini</div>
           </div>
+        </div>
+      </div>
+      <div class="profile-section">
+        <h3>🏆 Achievement</h3>
+        <div class="achievement-grid">
+          ${ACHIEVEMENTS.map(a => `
+            <div class="achievement-item ${(p.unlockedBadges || []).includes(a.id) ? 'unlocked' : 'locked'}">
+              <div class="achievement-icon">${a.icon}</div>
+              <div class="achievement-title">${a.title}</div>
+              <div class="achievement-desc">${a.desc}</div>
+            </div>
+          `).join('')}
         </div>
       </div>
       <div class="profile-section">
