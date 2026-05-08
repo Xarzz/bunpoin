@@ -306,6 +306,10 @@ function render() {
     renderTryoutPage();
   } else if (page === 'profile') {
     renderProfilePage();
+  } else if (page === 'daily') {
+    renderDailyChallenge();
+  } else if (page === 'search') {
+    renderSearchPage();
   } else if (page && levels[page]) {
     renderLevelPage(page, params[0] || (page === 'kana' ? 'hiragana' : 'kanji'));
   } else {
@@ -366,6 +370,21 @@ function renderHome() {
     <div class="hero-cta">
       <button class="btn btn-primary" onclick="document.getElementById('levels').scrollIntoView({behavior:'smooth'})">Mulai Belajar 🚀</button>
       <button class="btn btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Fitur Lengkap</button>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="home-actions">
+      <a class="home-action-card" onclick="location.hash='#/daily'">
+        <div class="home-action-icon">📅</div>
+        <div class="home-action-title">Daily Challenge</div>
+        <div class="home-action-desc">5 soal harian baru setiap hari</div>
+      </a>
+      <a class="home-action-card" onclick="location.hash='#/search'">
+        <div class="home-action-icon">🔍</div>
+        <div class="home-action-title">Cari Kata</div>
+        <div class="home-action-desc">Cari kanji, vocab, grammar</div>
+      </a>
     </div>
   </section>
 
@@ -663,10 +682,10 @@ function renderGrammar(el, l) {
 }
 
 // Quiz state
-let quizState = { current: 0, score: 0, answered: false, questions: [], isCustom: false, skill: null, sessionIdx: null };
+let quizState = { current: 0, score: 0, answered: false, questions: [], isCustom: false, skill: null, sessionIdx: null, wrongs: [] };
 
 function renderQuiz(el, l) {
-  quizState = { current: 0, score: 0, answered: false, questions: [...l.quiz].sort(() => Math.random() - 0.5), isCustom: false, skill: 'quiz', sessionIdx: null };
+  quizState = { current: 0, score: 0, answered: false, questions: [...l.quiz].sort(() => Math.random() - 0.5), isCustom: false, skill: 'quiz', sessionIdx: null, wrongs: [] };
   renderQuizQuestion(el);
 }
 
@@ -714,7 +733,19 @@ function renderQuizQuestion(el) {
           <button class="btn ${isCustom ? 'btn-success' : 'btn-primary'}" style="width:100%;" onclick="${retryAction}">Coba Lagi</button>
           ${extraButtons.replace(/<button class="btn/g, '<button class="btn" style="width:100%;"')}
         </div>
-      </div>`;
+      </div>
+      ${quizState.wrongs.length > 0 ? `
+        <div class="review-section">
+          <h3>❌ Review Jawaban Salah (${quizState.wrongs.length})</h3>
+          ${quizState.wrongs.map(w => `
+            <div class="review-item">
+              <div class="review-q">${w.q}</div>
+              <div class="review-wrong">Jawabanmu: ${w.yourAns}</div>
+              <div class="review-correct">Jawaban benar: ${w.correctAns}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : ''}`;
     return;
   }
   const q = questions[current];
@@ -746,6 +777,8 @@ window.handleAnswer = function(selected, correct) {
   document.getElementById(`opt-${correct}`).classList.add('correct');
   if (selected !== correct) {
     document.getElementById(`opt-${selected}`).classList.add('wrong');
+    const q = quizState.questions[quizState.current];
+    quizState.wrongs.push({ q: q.q, yourAns: q.opts[selected], correctAns: q.opts[correct], type: q.type });
   } else {
     quizState.score++;
   }
@@ -883,7 +916,7 @@ window.startCustomQuiz = function(skill, sessionIdx) {
       });
     }
   }
-  quizState = { current: 0, score: 0, answered: false, questions: questions, isCustom: true, skill: skill, sessionIdx: sessionIdx };
+  quizState = { current: 0, score: 0, answered: false, questions: questions, isCustom: true, skill: skill, sessionIdx: sessionIdx, wrongs: [] };
   // Render over the skill content
   renderQuizQuestion(document.getElementById('skill-content'));
 };
@@ -1113,4 +1146,194 @@ function renderProfilePage() {
       </div>
     </div>
   `;
+}
+
+// ===== DAILY CHALLENGE =====
+function renderDailyChallenge() {
+  const today = new Date();
+  const seed = today.getFullYear() * 10000 + (today.getMonth()+1) * 100 + today.getDate();
+  function seededRandom(s) { s = Math.sin(s) * 10000; return s - Math.floor(s); }
+
+  const n5 = levels.n5;
+  if (!n5) { app.innerHTML = '<p>Data tidak tersedia</p>'; return; }
+
+  // Generate 5 deterministic daily questions from N5 quiz pool
+  const pool = [...n5.quiz];
+  const dailyQs = [];
+  for (let i = 0; i < 5 && pool.length > 0; i++) {
+    const idx = Math.floor(seededRandom(seed + i) * pool.length);
+    dailyQs.push(pool.splice(idx, 1)[0]);
+  }
+
+  // Check if already completed today
+  const p = getProgress();
+  const doneToday = p.lastDaily === today.toDateString();
+
+  if (doneToday) {
+    app.innerHTML = `
+      <div class="daily-page">
+        <div class="daily-header">
+          <div class="daily-emoji">✅</div>
+          <h1>Tantangan Hari Ini Selesai!</h1>
+          <p>Kamu sudah menyelesaikan Daily Challenge hari ini.<br>Comeback besok untuk tantangan baru!</p>
+        </div>
+        <button class="btn btn-primary" style="width:100%;max-width:300px;margin:24px auto;display:block;" onclick="location.hash='#/'">Kembali ke Home</button>
+      </div>
+    `;
+    return;
+  }
+
+  // Run mini quiz
+  let dcIdx = 0, dcScore = 0, dcAnswered = false, dcWrongs = [];
+
+  function renderDQ() {
+    if (dcIdx >= dailyQs.length) {
+      const pct = Math.round((dcScore / dailyQs.length) * 100);
+      p.lastDaily = today.toDateString();
+      p.dailyScores = p.dailyScores || [];
+      p.dailyScores.push({ date: today.toISOString(), pct });
+      saveProgress(p);
+      if (pct >= 80) setTimeout(() => launchConfetti(), 300);
+      setTimeout(() => checkAchievements(), 500);
+
+      app.innerHTML = `
+        <div class="daily-page">
+          <div class="quiz-result">
+            <div class="result-score">${pct}%</div>
+            <h2>${pct >= 80 ? '素晴らしい！' : pct >= 60 ? 'いいですね！' : 'もう少し！'}</h2>
+            <p>Daily Challenge: ${dcScore} / ${dailyQs.length}</p>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px;max-width:300px;margin:24px auto;">
+              <button class="btn btn-share" style="width:100%;" onclick="shareScore(${pct}, ${dcScore}, ${dailyQs.length})">📤 Share Hasil</button>
+              <button class="btn btn-primary" style="width:100%;" onclick="location.hash='#/'">Kembali ke Home</button>
+            </div>
+          </div>
+          ${dcWrongs.length > 0 ? `
+            <div class="review-section">
+              <h3>❌ Review Jawaban Salah (${dcWrongs.length})</h3>
+              ${dcWrongs.map(w => `
+                <div class="review-item">
+                  <div class="review-q">${w.q}</div>
+                  <div class="review-wrong">Jawabanmu: ${w.yourAns}</div>
+                  <div class="review-correct">Jawaban benar: ${w.correctAns}</div>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `;
+      return;
+    }
+    const q = dailyQs[dcIdx];
+    app.innerHTML = `
+      <div class="daily-page">
+        <div style="text-align:center;margin-bottom:16px;">
+          <span style="background:var(--accent-primary);color:white;padding:4px 12px;border-radius:100px;font-size:0.75rem;font-weight:700;">📅 Daily Challenge</span>
+        </div>
+        <div class="quiz-container">
+          <div class="quiz-progress">
+            <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${(dcIdx / dailyQs.length) * 100}%"></div></div>
+            <div class="quiz-progress-text">${dcIdx + 1} / ${dailyQs.length}</div>
+          </div>
+          <div class="quiz-question-card">
+            <div class="quiz-type-label">${q.type}</div>
+            <div class="quiz-question">${q.q}</div>
+          </div>
+          <div class="quiz-options">
+            ${q.opts.map((o, i) => `
+              <button class="quiz-option" id="dc-opt-${i}" onclick="window.__dcAnswer(${i}, ${q.ans})">
+                <span class="opt-letter">${String.fromCharCode(65 + i)}</span>
+                <span>${o}</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  window.__dcAnswer = function(sel, cor) {
+    if (dcAnswered) return;
+    dcAnswered = true;
+    document.getElementById(`dc-opt-${cor}`).classList.add('correct');
+    if (sel !== cor) {
+      document.getElementById(`dc-opt-${sel}`).classList.add('wrong');
+      const q = dailyQs[dcIdx];
+      dcWrongs.push({ q: q.q, yourAns: q.opts[sel], correctAns: q.opts[cor] });
+    } else { dcScore++; }
+    setTimeout(() => { dcIdx++; dcAnswered = false; renderDQ(); }, 1200);
+  };
+
+  renderDQ();
+}
+
+// ===== SEARCH PAGE =====
+function renderSearchPage() {
+  app.innerHTML = `
+    <div class="search-page">
+      <div class="search-header">
+        <h1>🔍 Cari Kata</h1>
+        <div class="search-input-wrap">
+          <input type="text" class="search-input" id="search-input" placeholder="Cari kanji, vocab, atau grammar..." oninput="window.__doSearch(this.value)" autofocus />
+        </div>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  `;
+
+  window.__doSearch = function(query) {
+    const r = document.getElementById('search-results');
+    if (!query || query.length < 1) { r.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:40px;">Ketik kata untuk mulai mencari...</p>'; return; }
+    const q = query.toLowerCase();
+    let results = [];
+
+    // Search across all levels
+    Object.entries(levels).forEach(([id, l]) => {
+      // Search kanji
+      if (l.kanji) {
+        l.kanji.forEach(k => {
+          if (k.char.includes(q) || k.meaning.toLowerCase().includes(q) || (k.on && k.on.includes(q)) || (k.kun && k.kun.includes(q))) {
+            results.push({ type: 'Kanji', level: l.label || id.toUpperCase(), main: k.char, sub: k.meaning, extra: k.on + ' / ' + k.kun });
+          }
+        });
+      }
+      // Search vocab
+      if (l.vocabSessions) {
+        l.vocabSessions.forEach(s => {
+          s.items.forEach(v => {
+            if (v.jp.toLowerCase().includes(q) || v.ro.toLowerCase().includes(q) || v.id.toLowerCase().includes(q)) {
+              results.push({ type: 'Vocab', level: l.label || id.toUpperCase(), main: v.jp, sub: v.id, extra: v.ro });
+            }
+          });
+        });
+      }
+      // Search grammar
+      if (l.grammar) {
+        l.grammar.forEach(g => {
+          if (g.pattern.toLowerCase().includes(q) || g.meaning.toLowerCase().includes(q)) {
+            results.push({ type: 'Grammar', level: l.label || id.toUpperCase(), main: g.pattern, sub: g.meaning, extra: g.example });
+          }
+        });
+      }
+    });
+
+    results = results.slice(0, 50);
+
+    if (results.length === 0) {
+      r.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:40px;">Tidak ditemukan hasil untuk "' + query + '"</p>';
+      return;
+    }
+
+    r.innerHTML = `<p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:12px;">${results.length} hasil ditemukan</p>` +
+      results.map(item => `
+        <div class="search-result-item" ${item.type === 'Vocab' ? `onclick="speakJP('${item.main.replace(/'/g, "\\\\'")}')"` : ''}>
+          <div class="search-result-tags">
+            <span class="search-tag type">${item.type}</span>
+            <span class="search-tag level">${item.level}</span>
+          </div>
+          <div class="search-result-main">${item.main}</div>
+          <div class="search-result-sub">${item.sub}</div>
+          <div class="search-result-extra">${item.extra || ''}</div>
+        </div>
+      `).join('');
+  };
 }
