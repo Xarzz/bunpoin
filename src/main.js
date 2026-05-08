@@ -75,6 +75,75 @@ function recordQuizDone(skill, sessionIdx, score, total) {
   saveProgress(p);
 }
 
+// ===== DARK MODE =====
+function initDarkMode() {
+  const saved = localStorage.getItem('bunpoin_dark');
+  if (saved === 'true' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+  }
+}
+window.toggleDarkMode = function() {
+  document.documentElement.classList.toggle('dark');
+  const isDark = document.documentElement.classList.contains('dark');
+  localStorage.setItem('bunpoin_dark', isDark);
+  // Update meta theme-color
+  document.querySelector('meta[name="theme-color"]').content = isDark ? '#0f172a' : '#f43f5e';
+};
+initDarkMode();
+
+// ===== FLASHCARD MODE =====
+window.openFlashcards = function(levelId) {
+  const l = levels[levelId];
+  if (!l || !l.vocabSessions) return;
+  const allWords = l.vocabSessions.flatMap(s => s.items);
+  const shuffled = allWords.sort(() => Math.random() - 0.5).slice(0, 20);
+  let idx = 0;
+  let flipped = false;
+
+  function renderCard() {
+    const w = shuffled[idx];
+    app.innerHTML = `
+      <div class="flashcard-page">
+        <div class="flashcard-header">
+          <button class="btn btn-outline" onclick="location.hash='#/${levelId}/vocab'" style="font-size:0.85rem;">← Kembali</button>
+          <span class="flashcard-counter">${idx + 1} / ${shuffled.length}</span>
+        </div>
+        <div class="flashcard-container" onclick="window.__flipCard()">
+          <div class="flashcard ${flipped ? 'flipped' : ''}">
+            <div class="flashcard-front">
+              <div class="flashcard-jp">${w.jp}</div>
+              <div class="flashcard-hint">Tap untuk lihat arti</div>
+            </div>
+            <div class="flashcard-back">
+              <div class="flashcard-meaning">${w.id}</div>
+              <div class="flashcard-romaji">${w.ro}</div>
+              <button class="flashcard-speak" onclick="event.stopPropagation(); speakJP('${w.jp.replace(/'/g, "\\\\'")}')">🔊</button>
+            </div>
+          </div>
+        </div>
+        <div class="flashcard-actions">
+          <button class="btn btn-outline" onclick="window.__prevCard()" ${idx === 0 ? 'disabled' : ''}>← Sebelumnya</button>
+          <button class="btn btn-primary" onclick="window.__nextCard()">${idx < shuffled.length - 1 ? 'Selanjutnya →' : '🎉 Selesai!'}</button>
+        </div>
+        <div class="flashcard-progress-bar">
+          <div class="flashcard-progress-fill" style="width:${((idx + 1) / shuffled.length) * 100}%"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  window.__flipCard = () => { flipped = !flipped; renderCard(); };
+  window.__nextCard = () => {
+    if (idx < shuffled.length - 1) { idx++; flipped = false; renderCard(); }
+    else { navigate(`#/${levelId}/vocab`); }
+  };
+  window.__prevCard = () => {
+    if (idx > 0) { idx--; flipped = false; renderCard(); }
+  };
+
+  renderCard();
+};
+
 // Simple hash router
 let currentRoute = '';
 const app = document.getElementById('app');
@@ -391,9 +460,12 @@ function renderVocab(el, l) {
   }
 
   el.innerHTML = `
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:16px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
       <h2 style="margin:0">Kosakata ${l.label}</h2>
-      <button class="btn btn-primary" onclick="window.openSessionModal('vocab')">Mulai Drilling Quiz</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-info" onclick="window.openFlashcards('${l.id}')">🃏 Flashcard</button>
+        <button class="btn btn-primary" onclick="window.openSessionModal('vocab')">Mulai Drilling Quiz</button>
+      </div>
     </div>
     <div class="vocab-topics-grid">
       ${l.vocabSessions.map((session, sIdx) => `
@@ -902,9 +974,9 @@ function renderProfilePage() {
           <span>🔔 Notifikasi Belajar</span>
           <span class="arrow">›</span>
         </div>
-        <div class="profile-menu-item" onclick="alert('Fitur coming soon!')">
+        <div class="profile-menu-item" onclick="toggleDarkMode(); renderProfilePage();">
           <span>🌙 Mode Gelap</span>
-          <span class="arrow">›</span>
+          <span class="arrow" style="font-size:0.8rem;color:var(--text-muted)">${document.documentElement.classList.contains('dark') ? 'ON' : 'OFF'}</span>
         </div>
         <div class="profile-menu-item" onclick="alert('Fitur coming soon!')">
           <span>🎯 Target Level</span>
