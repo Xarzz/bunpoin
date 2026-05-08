@@ -53,12 +53,35 @@ function render() {
   currentRoute = getRoute();
   const [page, ...params] = currentRoute.split('/').filter(Boolean);
 
-  if (page && levels[page]) {
+  if (page === 'learn') {
+    renderLearnPage();
+  } else if (page === 'tryout') {
+    renderTryoutPage();
+  } else if (page === 'profile') {
+    renderProfilePage();
+  } else if (page && levels[page]) {
     renderLevelPage(page, params[0] || (page === 'kana' ? 'hiragana' : 'kanji'));
   } else {
     renderHome();
   }
+  updateBottomNav();
   window.scrollTo(0, 0);
+}
+
+function updateBottomNav() {
+  const nav = document.getElementById('bottom-nav');
+  if (!nav) return;
+  const [page] = currentRoute.split('/').filter(Boolean);
+  nav.querySelectorAll('.bottom-nav-item').forEach(btn => {
+    const tab = btn.dataset.tab;
+    btn.classList.toggle('active',
+      (!page && tab === 'home') ||
+      (page === 'learn' && tab === 'learn') ||
+      (page === 'tryout' && tab === 'tryout') ||
+      (page === 'profile' && tab === 'profile') ||
+      (page && levels[page] && tab === 'tryout')
+    );
+  });
 }
 
 // ===== NAVBAR =====
@@ -688,3 +711,133 @@ function renderWriting(el, l) {
 window.renderQuiz = renderQuiz;
 window.__currentLevel = null;
 
+// ===== LEARN PAGE =====
+function renderLearnPage() {
+  const steps = [
+    { n: 1, title: "Hiragana Dasar", desc: "Pelajari 46 huruf Hiragana dasar (あ〜ん)", tag: "Kana", link: "#/kana/hiragana" },
+    { n: 2, title: "Katakana Dasar", desc: "Pelajari 46 huruf Katakana dasar (ア〜ン)", tag: "Kana", link: "#/kana/katakana" },
+    { n: 3, title: "Kosakata Perkenalan", desc: "Belajar kata untuk memperkenalkan diri", tag: "N5 Vocab", link: "#/n5/vocab" },
+    { n: 4, title: "Kosakata Keluarga", desc: "Kata-kata tentang anggota keluarga", tag: "N5 Vocab", link: "#/n5/vocab" },
+    { n: 5, title: "Angka & Waktu", desc: "Belajar angka, hari, bulan, dan waktu", tag: "N5 Vocab", link: "#/n5/vocab" },
+    { n: 6, title: "Kanji Dasar N5", desc: "100 Kanji paling dasar untuk JLPT N5", tag: "N5 Kanji", link: "#/n5/kanji" },
+    { n: 7, title: "Grammar N5 Dasar", desc: "Pola kalimat dasar: は、が、を、に、で", tag: "N5 Grammar", link: "#/n5/grammar" },
+    { n: 8, title: "Kosakata Sehari-hari", desc: "Makanan, rumah, transportasi, tempat", tag: "N5 Vocab", link: "#/n5/vocab" },
+    { n: 9, title: "Grammar N5 Lanjutan", desc: "て-form, たい, ている, ましょう", tag: "N5 Grammar", link: "#/n5/grammar" },
+    { n: 10, title: "Kata Kerja & Sifat", desc: "Kata kerja dan kata sifat penting N5", tag: "N5 Vocab", link: "#/n5/vocab" },
+    { n: 11, title: "Quiz N5 — Sesi 1", desc: "Tes pemahamanmu tentang Kanji & Grammar", tag: "Quiz", link: "#/n5/quiz" },
+    { n: 12, title: "Reading N5", desc: "Latihan membaca teks pendek bahasa Jepang", tag: "N5 Reading", link: "#/n5/reading" },
+    { n: 13, title: "Listening N5", desc: "Latihan mendengarkan percakapan dasar", tag: "N5 Listening", link: "#/n5/listening" },
+    { n: 14, title: "Writing N5", desc: "Latihan menulis kalimat sederhana", tag: "N5 Writing", link: "#/n5/writing" },
+    { n: 15, title: "Quiz N5 — Final", desc: "Simulasi ujian JLPT N5 lengkap", tag: "Quiz", link: "#/n5/quiz" },
+    { n: 16, title: "Lanjut ke N4!", desc: "Siap naik level? Mulai perjalanan N4", tag: "N4", link: "#/n4/kanji" },
+  ];
+
+  app.innerHTML = `
+    <div class="learn-page">
+      <div class="learn-header">
+        <h1>📖 Alur Belajar</h1>
+        <p>Ikuti tahapan belajar terstruktur dari nol hingga JLPT N5</p>
+      </div>
+      <div class="learn-path">
+        ${steps.map((s, i) => `
+          <div class="learn-step">
+            <div class="learn-step-line">
+              <div class="learn-step-dot ${i === 0 ? 'active' : ''}">${s.n}</div>
+              ${i < steps.length - 1 ? '<div class="learn-step-connector"></div>' : ''}
+            </div>
+            <div class="learn-step-content" onclick="location.hash='${s.link}'">
+              <h3>${s.title}</h3>
+              <p>${s.desc}</p>
+              <span class="step-tag">${s.tag}</span>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ===== TRYOUT PAGE =====
+function renderTryoutPage() {
+  const lvls = [
+    { id: 'kana', label: 'Kana', title: 'Hiragana & Katakana', color: '#f43f5e', desc: '208 huruf dasar' },
+    { id: 'n5', label: 'N5', title: 'Pemula', color: '#10b981', desc: '100 Kanji · 80 Grammar · 800 Vocab' },
+    { id: 'n4', label: 'N4', title: 'Dasar', color: '#3b82f6', desc: 'Kanji · Grammar · Vocab' },
+    { id: 'n3', label: 'N3', title: 'Menengah', color: '#8b5cf6', desc: 'Kanji · Grammar · Vocab' },
+    { id: 'n2', label: 'N2', title: 'Lanjutan', color: '#f59e0b', desc: 'Kanji · Grammar · Vocab' },
+    { id: 'n1', label: 'N1', title: 'Mahir', color: '#ef4444', desc: 'Kanji · Grammar · Vocab' },
+  ];
+
+  app.innerHTML = `
+    <div class="tryout-page">
+      <div class="tryout-header">
+        <h1>📝 Tryout & Latihan</h1>
+        <p style="color:var(--text-muted);margin-top:8px;">Akses bebas semua materi — belajar sesukamu!</p>
+      </div>
+      <div class="tryout-level-list">
+        ${lvls.map(l => `
+          <button class="tryout-level-btn" onclick="location.hash='#/${l.id}/${l.id === 'kana' ? 'hiragana' : 'kanji'}'">
+            <div class="tryout-level-badge" style="background:${l.color}">${l.label}</div>
+            <div class="tryout-level-info">
+              <h3>${l.title}</h3>
+              <p>${l.desc}</p>
+            </div>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ===== PROFILE PAGE =====
+function renderProfilePage() {
+  app.innerHTML = `
+    <div class="profile-page">
+      <div class="profile-card">
+        <div class="profile-avatar">🎌</div>
+        <div class="profile-name">Pelajar Bunpoin</div>
+        <div class="profile-subtitle">Mulai perjalanan JLPT-mu!</div>
+        <div class="profile-stats">
+          <div class="profile-stat">
+            <div class="profile-stat-value">0</div>
+            <div class="profile-stat-label">Hari Streak</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat-value">0</div>
+            <div class="profile-stat-label">Quiz Selesai</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat-value">N5</div>
+            <div class="profile-stat-label">Level Saat Ini</div>
+          </div>
+        </div>
+      </div>
+      <div class="profile-section">
+        <h3>Pengaturan</h3>
+        <div class="profile-menu-item" onclick="alert('Fitur coming soon!')">
+          <span>🔔 Notifikasi Belajar</span>
+          <span class="arrow">›</span>
+        </div>
+        <div class="profile-menu-item" onclick="alert('Fitur coming soon!')">
+          <span>🌙 Mode Gelap</span>
+          <span class="arrow">›</span>
+        </div>
+        <div class="profile-menu-item" onclick="alert('Fitur coming soon!')">
+          <span>🎯 Target Level</span>
+          <span class="arrow">›</span>
+        </div>
+      </div>
+      <div class="profile-section">
+        <h3>Tentang</h3>
+        <div class="profile-menu-item">
+          <span>📱 Versi Aplikasi</span>
+          <span class="arrow" style="font-size:0.8rem;color:var(--text-muted)">v1.0.0</span>
+        </div>
+        <div class="profile-menu-item" onclick="window.open('https://github.com/Xarzz/bunpoin','_blank')">
+          <span>⭐ GitHub Repository</span>
+          <span class="arrow">›</span>
+        </div>
+      </div>
+    </div>
+  `;
+}

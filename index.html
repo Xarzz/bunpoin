@@ -2,19 +2,45 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Bunpoin - Aplikasi belajar dan persiapan tes JLPT N5 hingga N1. Latihan Kanji, Grammar, Reading, Listening, dan Writing." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Bunpoin - Aplikasi belajar bahasa Jepang interaktif untuk persiapan JLPT N5 hingga N1." />
   <meta name="keywords" content="JLPT, 日本語, Japanese, N5, N4, N3, N2, N1, Kanji, Grammar, Bunpo, Learning" />
+  <meta name="theme-color" content="#f43f5e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Bunpoin" />
   <title>Bunpoin - JLPT Preparation</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icons/icon-192.svg" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
   <div id="app"></div>
-  
+
+  <!-- BOTTOM NAV (Mobile App Style) -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="bottom-nav-item active" data-tab="home" onclick="location.hash='#/'">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="learn" onclick="location.hash='#/learn'">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <span>Belajar</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="tryout" onclick="location.hash='#/tryout'">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span>Tryout</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="profile" onclick="location.hash='#/profile'">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profil</span>
+    </button>
+  </nav>
+
   <!-- KANJI MODAL -->
   <div id="kanji-modal" class="modal-overlay">
     <div class="modal-content kanji-detail">
@@ -27,9 +53,7 @@
       </div>
       <div class="kanji-examples-section">
         <h3>Contoh Penggunaan</h3>
-        <ul id="modal-kanji-examples">
-          <!-- Examples populated dynamically -->
-        </ul>
+        <ul id="modal-kanji-examples"></ul>
       </div>
     </div>
   </div>
@@ -39,12 +63,15 @@
     <div class="modal-content session-detail">
       <button class="close-modal" id="close-session-modal">&times;</button>
       <h2 style="margin-bottom:16px;text-align:center;">Pilih Sesi Quiz</h2>
-      <div id="session-list" class="session-list">
-        <!-- Sessions populated dynamically -->
-      </div>
+      <div id="session-list" class="session-list"></div>
     </div>
   </div>
 
   <script type="module" src="/src/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  </script>
 </body>
 </html>

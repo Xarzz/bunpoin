@@ -1,0 +1,18 @@
+{
+  "name": "Bunpoin - JLPT Learning",
+  "short_name": "Bunpoin",
+  "description": "Aplikasi belajar bahasa Jepang interaktif untuk persiapan JLPT N5 hingga N1",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#f43f5e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
