@@ -91,6 +91,82 @@ window.toggleDarkMode = function() {
 };
 initDarkMode();
 
+// ===== BOOKMARK SYSTEM =====
+function getBookmarks() {
+  try { return JSON.parse(localStorage.getItem('bunpoin_bookmarks') || '[]'); } catch { return []; }
+}
+function toggleBookmark(word, reading, meaning) {
+  let bm = getBookmarks();
+  const idx = bm.findIndex(b => b.word === word);
+  if (idx >= 0) { bm.splice(idx, 1); } else { bm.push({ word, reading, meaning, date: new Date().toISOString() }); }
+  localStorage.setItem('bunpoin_bookmarks', JSON.stringify(bm));
+  return idx < 0; // true if added
+}
+function isBookmarked(word) {
+  return getBookmarks().some(b => b.word === word);
+}
+window.toggleBM = function(word, reading, meaning, btn) {
+  const added = toggleBookmark(word, reading, meaning);
+  btn.textContent = added ? '⭐' : '☆';
+  btn.classList.toggle('bookmarked', added);
+};
+
+// ===== STATS CHART =====
+function renderStatsChart(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const p = getProgress();
+  const quizzes = p.quizzes || [];
+
+  // Last 7 days
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(Date.now() - i * 86400000);
+    const key = d.toDateString();
+    const label = d.toLocaleDateString('id-ID', { weekday: 'short' });
+    const count = quizzes.filter(q => new Date(q.date).toDateString() === key).length;
+    days.push({ label, count });
+  }
+
+  const w = canvas.width = canvas.offsetWidth * 2;
+  const h = canvas.height = 200;
+  ctx.scale(1, 1);
+  const maxCount = Math.max(...days.map(d => d.count), 1);
+  const barW = (w / days.length) * 0.5;
+  const gap = (w / days.length);
+
+  // Bars
+  days.forEach((d, i) => {
+    const barH = (d.count / maxCount) * (h - 50);
+    const x = i * gap + (gap - barW) / 2;
+    const y = h - 30 - barH;
+
+    // Gradient bar
+    const grad = ctx.createLinearGradient(x, y, x, h - 30);
+    grad.addColorStop(0, '#f43f5e');
+    grad.addColorStop(1, '#f59e0b');
+    ctx.fillStyle = d.count > 0 ? grad : '#e2e8f033';
+    ctx.beginPath();
+    ctx.roundRect(x, y, barW, barH || 4, 4);
+    ctx.fill();
+
+    // Count label
+    if (d.count > 0) {
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim() || '#0f172a';
+      ctx.font = 'bold 18px Inter';
+      ctx.textAlign = 'center';
+      ctx.fillText(d.count, x + barW / 2, y - 8);
+    }
+
+    // Day label
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || '#94a3b8';
+    ctx.font = '16px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText(d.label, x + barW / 2, h - 8);
+  });
+}
+
 // ===== ACHIEVEMENTS =====
 const ACHIEVEMENTS = [
   { id: 'first_quiz', icon: '🎯', title: 'Quiz Pertama', desc: 'Selesaikan quiz pertamamu', check: p => (p.totalQuizzes || 0) >= 1 },
@@ -598,10 +674,10 @@ function renderVocab(el, l) {
           </div>
           <div class="vocab-items-list">
             ${session.items.map(item => `
-              <div class="vocab-item" onclick="speakJP('${item.jp.replace(/'/g, "\\'")}')">  
+              <div class="vocab-item" onclick="speakJP('${item.jp.replace(/'/g, "\\'")}')">
                 <span class="vocab-jp">${item.jp} <span class="tts-btn">🔊</span></span>
                 <span class="vocab-ro">${item.ro}</span>
-                <span class="vocab-id">${item.id}</span>
+                <span class="vocab-id">${item.id} <button class="bm-btn ${isBookmarked(item.jp)?'bookmarked':''}" onclick="event.stopPropagation(); toggleBM('${item.jp.replace(/'/g, "\\'")}','${item.ro.replace(/'/g, "\\'")}','${item.id.replace(/'/g, "\\'")}',this)">${isBookmarked(item.jp)?'⭐':'☆'}</button></span>
               </div>
             `).join('')}
           </div>
@@ -1119,6 +1195,26 @@ function renderProfilePage() {
         </div>
       </div>
       <div class="profile-section">
+        <h3>📊 Aktivitas Mingguan</h3>
+        <div class="chart-wrapper">
+          <canvas id="stats-chart" style="width:100%;height:100px;"></canvas>
+        </div>
+      </div>
+      <div class="profile-section">
+        <h3>⭐ Kata Tersimpan (${getBookmarks().length})</h3>
+        ${getBookmarks().length > 0 ? `
+          <div class="bookmarks-list">
+            ${getBookmarks().slice(0, 10).map(b => `
+              <div class="bookmark-item" onclick="speakJP('${b.word.replace(/'/g, "\\'")}')">
+                <div class="bookmark-word">${b.word}</div>
+                <div class="bookmark-meaning">${b.meaning}</div>
+                <button class="bm-remove" onclick="event.stopPropagation(); toggleBookmark('${b.word.replace(/'/g, "\\'")}','',''); renderProfilePage();">✕</button>
+              </div>
+            `).join('')}
+          </div>
+        ` : '<p style="color:var(--text-muted);font-size:0.85rem;">Belum ada kata tersimpan. Tap ☆ di halaman vocab untuk menyimpan.</p>'}
+      </div>
+      <div class="profile-section">
         <h3>Pengaturan</h3>
         <div class="profile-menu-item" onclick="alert('Fitur coming soon!')">
           <span>🔔 Notifikasi Belajar</span>
@@ -1146,6 +1242,7 @@ function renderProfilePage() {
       </div>
     </div>
   `;
+  setTimeout(() => renderStatsChart('stats-chart'), 50);
 }
 
 // ===== DAILY CHALLENGE =====

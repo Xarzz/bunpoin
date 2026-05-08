@@ -1505,3 +1505,74 @@ body { padding-bottom: 72px; }
   color: var(--text-muted);
   margin-top: 4px;
 }
+
+/* ============ BOOKMARK BUTTON ============ */
+.bm-btn {
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: var(--transition);
+  padding: 0 2px;
+  vertical-align: middle;
+}
+.bm-btn:hover, .bm-btn.bookmarked {
+  opacity: 1;
+}
+
+/* ============ STATS CHART ============ */
+.chart-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  overflow: hidden;
+}
+
+/* ============ BOOKMARKS LIST ============ */
+.bookmarks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bookmark-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.bookmark-item:hover {
+  border-color: var(--accent-primary);
+}
+.bookmark-word {
+  font-family: var(--font-jp);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 80px;
+}
+.bookmark-meaning {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.bm-remove {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 50%;
+  transition: var(--transition);
+}
+.bm-remove:hover {
+  background: rgba(244,63,94,0.1);
+  color: var(--accent-red);
+}
