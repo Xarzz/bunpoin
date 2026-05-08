@@ -227,11 +227,11 @@ function renderKana(el, l, skill) {
     const rowItems = allItems.slice(cursor, cursor + count);
     
     // Beri judul setiap kategori untuk memudahkan visual (opsional, tapi memperjelas)
-    if (cursor === 0) layoutHtml += `<h3 style="margin-top:20px; color:var(--text-muted)">Seion (Huruf Dasar)</h3>`;
-    if (cursor === 46) layoutHtml += `<h3 style="margin-top:20px; color:var(--text-muted)">Dakuon & Handakuon</h3>`;
-    if (cursor === 71) layoutHtml += `<h3 style="margin-top:20px; color:var(--text-muted)">Yōon (Huruf Gabungan)</h3>`;
+    if (cursor === 0) layoutHtml += `<h3 class="kana-section-title">Seion (Huruf Dasar)</h3>`;
+    if (cursor === 46) layoutHtml += `<h3 class="kana-section-title">Dakuon & Handakuon</h3>`;
+    if (cursor === 71) layoutHtml += `<h3 class="kana-section-title">Yōon (Huruf Gabungan)</h3>`;
     
-    layoutHtml += `<div class="kana-row" style="display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap;">`;
+    layoutHtml += `<div class="kana-row">`;
     layoutHtml += rowItems.map(k => `
       <div class="kana-char-card">
         <div class="char">${k.char}</div>
