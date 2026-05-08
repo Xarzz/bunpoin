@@ -162,8 +162,8 @@ function renderLevelPage(levelId, activeSkill) {
         <div class="stat-item"><div class="stat-value" style="color:${l.color}">104</div><div class="stat-label">Katakana</div></div>
       ` : `
         <div class="stat-item"><div class="stat-value" style="color:${l.color}">${l.kanjiCount}</div><div class="stat-label">Kanji</div></div>
-        <div class="stat-item"><div class="stat-value" style="color:${l.color}">${l.grammarCount}</div><div class="stat-label">Grammar</div></div>
-        <div class="stat-item"><div class="stat-value" style="color:${l.color}">${l.vocabCount}</div><div class="stat-label">Vocabulary</div></div>
+        <div class="stat-item"><div class="stat-value" style="color:${l.color}">${l.grammarCount || l.grammar.length}</div><div class="stat-label">Grammar</div></div>
+        <div class="stat-item"><div class="stat-value" style="color:${l.color}">${l.vocabSessions ? l.vocabSessions.reduce((a,s) => a + s.items.length, 0) : l.vocabCount}</div><div class="stat-label">Vocabulary</div></div>
       `}
     </div>
   </div>
