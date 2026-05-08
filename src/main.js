@@ -105,6 +105,13 @@ function toggleBookmark(word, reading, meaning) {
 function isBookmarked(word) {
   return getBookmarks().some(b => b.word === word);
 }
+// ===== HAPTIC & SOUND FEEDBACK =====
+function haptic(type) {
+  if (!navigator.vibrate) return;
+  if (type === 'success') navigator.vibrate(50);
+  else if (type === 'error') navigator.vibrate([50, 30, 80]);
+}
+
 window.toggleBM = function(word, reading, meaning, btn) {
   const added = toggleBookmark(word, reading, meaning);
   btn.textContent = added ? '⭐' : '☆';
@@ -386,6 +393,8 @@ function render() {
     renderDailyChallenge();
   } else if (page === 'search') {
     renderSearchPage();
+  } else if (page === 'review') {
+    renderQuickReview();
   } else if (page && levels[page]) {
     renderLevelPage(page, params[0] || (page === 'kana' ? 'hiragana' : 'kanji'));
   } else {
@@ -835,6 +844,7 @@ function renderQuizQuestion(el) {
         <div class="quiz-type-label">${q.type}</div>
         <div class="quiz-question">${q.q}</div>
       </div>
+      <div id="quiz-timer-bar" class="quiz-timer-bar"><div id="quiz-timer-fill" class="quiz-timer-fill"></div></div>
       <div class="quiz-options">
         ${q.opts.map((o, i) => `
           <button class="quiz-option" id="opt-${i}" onclick="handleAnswer(${i}, ${q.ans})">
@@ -844,18 +854,36 @@ function renderQuizQuestion(el) {
         `).join('')}
       </div>
     </div>`;
+
+  // Start timer (15 seconds per question)
+  if (quizState.timerId) clearInterval(quizState.timerId);
+  let timeLeft = 150;
+  const fill = document.getElementById('quiz-timer-fill');
+  quizState.timerId = setInterval(() => {
+    timeLeft--;
+    if (fill) fill.style.width = (timeLeft / 150 * 100) + '%';
+    if (timeLeft <= 0) {
+      clearInterval(quizState.timerId);
+      if (!quizState.answered) handleAnswer(-1, q.ans); // Auto-wrong
+    }
+  }, 100);
 }
 
 window.handleAnswer = function(selected, correct) {
   if (quizState.answered) return;
   quizState.answered = true;
 
+  // Clear timer
+  if (quizState.timerId) { clearInterval(quizState.timerId); quizState.timerId = null; }
+
   document.getElementById(`opt-${correct}`).classList.add('correct');
   if (selected !== correct) {
     document.getElementById(`opt-${selected}`).classList.add('wrong');
+    haptic('error');
     const q = quizState.questions[quizState.current];
     quizState.wrongs.push({ q: q.q, yourAns: q.opts[selected], correctAns: q.opts[correct], type: q.type });
   } else {
+    haptic('success');
     quizState.score++;
   }
 
@@ -1201,7 +1229,10 @@ function renderProfilePage() {
         </div>
       </div>
       <div class="profile-section">
-        <h3>⭐ Kata Tersimpan (${getBookmarks().length})</h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3 style="margin:0;">⭐ Kata Tersimpan (${getBookmarks().length})</h3>
+          ${getBookmarks().length > 0 ? `<button class="btn btn-primary btn-sm" onclick="location.hash='#/review'">Quick Review 🔄</button>` : ''}
+        </div>
         ${getBookmarks().length > 0 ? `
           <div class="bookmarks-list">
             ${getBookmarks().slice(0, 10).map(b => `
@@ -1243,6 +1274,63 @@ function renderProfilePage() {
     </div>
   `;
   setTimeout(() => renderStatsChart('stats-chart'), 50);
+}
+
+// ===== QUICK REVIEW =====
+function renderQuickReview() {
+  const bms = getBookmarks();
+  if (bms.length === 0) {
+    location.hash = '#/';
+    return;
+  }
+
+  // Shuffle bookmarks
+  const shuffled = [...bms].sort(() => Math.random() - 0.5);
+  let idx = 0;
+  let flipped = false;
+
+  function renderCard() {
+    const w = shuffled[idx];
+    app.innerHTML = `
+      <div class="flashcard-page">
+        <div class="flashcard-header">
+          <button class="btn btn-outline" onclick="location.hash='#/profile'">✕ Tutup</button>
+          <span>Quick Review: ${idx + 1} / ${shuffled.length}</span>
+        </div>
+        <div class="flashcard-scene" onclick="window.__flipCard()">
+          <div class="flashcard ${flipped ? 'flipped' : ''}">
+            <div class="flashcard-face flashcard-front">
+              <div class="flashcard-char">${w.word}</div>
+              <div style="margin-top:16px; font-size:0.9rem; color:var(--text-muted);">Tap untuk membalik</div>
+            </div>
+            <div class="flashcard-face flashcard-back">
+              <div class="flashcard-meaning">${w.meaning}</div>
+              <div class="flashcard-romaji">${w.reading}</div>
+              <button class="flashcard-speak" onclick="event.stopPropagation(); speakJP('${w.word.replace(/'/g, "\\\\'")}')">🔊</button>
+            </div>
+          </div>
+        </div>
+        <div class="flashcard-actions">
+          <button class="btn btn-outline" onclick="window.__prevCard()" ${idx === 0 ? 'disabled' : ''}>← Sebelumnya</button>
+          <button class="btn btn-primary" onclick="window.__nextCard()">${idx < shuffled.length - 1 ? 'Selanjutnya →' : '🎉 Selesai!'}</button>
+        </div>
+        <div class="flashcard-progress-bar">
+          <div class="flashcard-progress-fill" style="width:${((idx + 1) / shuffled.length) * 100}%"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  window.__flipCard = () => { flipped = !flipped; renderCard(); };
+  window.__nextCard = () => {
+    if (idx < shuffled.length - 1) { idx++; flipped = false; renderCard(); }
+    else { location.hash = '#/profile'; }
+  };
+  window.__prevCard = () => {
+    if (idx > 0) { idx--; flipped = false; renderCard(); }
+  };
+
+  renderCard();
 }
 
 // ===== DAILY CHALLENGE =====
