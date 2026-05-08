@@ -217,6 +217,274 @@ export const levels = {
           {
             "char": "ん",
             "ro": "n"
+          },
+          {
+            "char": "が",
+            "ro": "ga"
+          },
+          {
+            "char": "ぎ",
+            "ro": "gi"
+          },
+          {
+            "char": "ぐ",
+            "ro": "gu"
+          },
+          {
+            "char": "げ",
+            "ro": "ge"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Sesi 6",
+        "items": [
+          {
+            "char": "ご",
+            "ro": "go"
+          },
+          {
+            "char": "ざ",
+            "ro": "za"
+          },
+          {
+            "char": "じ",
+            "ro": "ji"
+          },
+          {
+            "char": "ず",
+            "ro": "zu"
+          },
+          {
+            "char": "ぜ",
+            "ro": "ze"
+          },
+          {
+            "char": "ぞ",
+            "ro": "zo"
+          },
+          {
+            "char": "だ",
+            "ro": "da"
+          },
+          {
+            "char": "ぢ",
+            "ro": "ji"
+          },
+          {
+            "char": "づ",
+            "ro": "zu"
+          },
+          {
+            "char": "で",
+            "ro": "de"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Sesi 7",
+        "items": [
+          {
+            "char": "ど",
+            "ro": "do"
+          },
+          {
+            "char": "ば",
+            "ro": "ba"
+          },
+          {
+            "char": "び",
+            "ro": "bi"
+          },
+          {
+            "char": "ぶ",
+            "ro": "bu"
+          },
+          {
+            "char": "べ",
+            "ro": "be"
+          },
+          {
+            "char": "ぼ",
+            "ro": "bo"
+          },
+          {
+            "char": "ぱ",
+            "ro": "pa"
+          },
+          {
+            "char": "ぴ",
+            "ro": "pi"
+          },
+          {
+            "char": "ぷ",
+            "ro": "pu"
+          },
+          {
+            "char": "ぺ",
+            "ro": "pe"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Sesi 8",
+        "items": [
+          {
+            "char": "ぽ",
+            "ro": "po"
+          },
+          {
+            "char": "きゃ",
+            "ro": "kya"
+          },
+          {
+            "char": "きゅ",
+            "ro": "kyu"
+          },
+          {
+            "char": "きょ",
+            "ro": "kyo"
+          },
+          {
+            "char": "しゃ",
+            "ro": "sha"
+          },
+          {
+            "char": "しゅ",
+            "ro": "shu"
+          },
+          {
+            "char": "しょ",
+            "ro": "sho"
+          },
+          {
+            "char": "ちゃ",
+            "ro": "cha"
+          },
+          {
+            "char": "ちゅ",
+            "ro": "chu"
+          },
+          {
+            "char": "ちょ",
+            "ro": "cho"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Sesi 9",
+        "items": [
+          {
+            "char": "にゃ",
+            "ro": "nya"
+          },
+          {
+            "char": "にゅ",
+            "ro": "nyu"
+          },
+          {
+            "char": "にょ",
+            "ro": "nyo"
+          },
+          {
+            "char": "ひゃ",
+            "ro": "hya"
+          },
+          {
+            "char": "ひゅ",
+            "ro": "hyu"
+          },
+          {
+            "char": "ひょ",
+            "ro": "hyo"
+          },
+          {
+            "char": "みゃ",
+            "ro": "mya"
+          },
+          {
+            "char": "みゅ",
+            "ro": "myu"
+          },
+          {
+            "char": "みょ",
+            "ro": "myo"
+          },
+          {
+            "char": "りゃ",
+            "ro": "rya"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Sesi 10",
+        "items": [
+          {
+            "char": "りゅ",
+            "ro": "ryu"
+          },
+          {
+            "char": "りょ",
+            "ro": "ryo"
+          },
+          {
+            "char": "ぎゃ",
+            "ro": "gya"
+          },
+          {
+            "char": "ぎゅ",
+            "ro": "gyu"
+          },
+          {
+            "char": "ぎょ",
+            "ro": "gyo"
+          },
+          {
+            "char": "じゃ",
+            "ro": "ja"
+          },
+          {
+            "char": "じゅ",
+            "ro": "ju"
+          },
+          {
+            "char": "じょ",
+            "ro": "jo"
+          },
+          {
+            "char": "びゃ",
+            "ro": "bya"
+          },
+          {
+            "char": "びゅ",
+            "ro": "byu"
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Sesi 11",
+        "items": [
+          {
+            "char": "びょ",
+            "ro": "byo"
+          },
+          {
+            "char": "ぴゃ",
+            "ro": "pya"
+          },
+          {
+            "char": "ぴゅ",
+            "ro": "pyu"
+          },
+          {
+            "char": "ぴょ",
+            "ro": "pyo"
           }
         ]
       }
@@ -433,6 +701,274 @@ export const levels = {
           {
             "char": "ン",
             "ro": "n"
+          },
+          {
+            "char": "ガ",
+            "ro": "ga"
+          },
+          {
+            "char": "ギ",
+            "ro": "gi"
+          },
+          {
+            "char": "グ",
+            "ro": "gu"
+          },
+          {
+            "char": "ゲ",
+            "ro": "ge"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Sesi 6",
+        "items": [
+          {
+            "char": "ゴ",
+            "ro": "go"
+          },
+          {
+            "char": "ザ",
+            "ro": "za"
+          },
+          {
+            "char": "ジ",
+            "ro": "ji"
+          },
+          {
+            "char": "ズ",
+            "ro": "zu"
+          },
+          {
+            "char": "ゼ",
+            "ro": "ze"
+          },
+          {
+            "char": "ゾ",
+            "ro": "zo"
+          },
+          {
+            "char": "ダ",
+            "ro": "da"
+          },
+          {
+            "char": "ヂ",
+            "ro": "ji"
+          },
+          {
+            "char": "ヅ",
+            "ro": "zu"
+          },
+          {
+            "char": "デ",
+            "ro": "de"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Sesi 7",
+        "items": [
+          {
+            "char": "ド",
+            "ro": "do"
+          },
+          {
+            "char": "バ",
+            "ro": "ba"
+          },
+          {
+            "char": "ビ",
+            "ro": "bi"
+          },
+          {
+            "char": "ブ",
+            "ro": "bu"
+          },
+          {
+            "char": "ベ",
+            "ro": "be"
+          },
+          {
+            "char": "ボ",
+            "ro": "bo"
+          },
+          {
+            "char": "パ",
+            "ro": "pa"
+          },
+          {
+            "char": "ピ",
+            "ro": "pi"
+          },
+          {
+            "char": "プ",
+            "ro": "pu"
+          },
+          {
+            "char": "ペ",
+            "ro": "pe"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Sesi 8",
+        "items": [
+          {
+            "char": "ポ",
+            "ro": "po"
+          },
+          {
+            "char": "キャ",
+            "ro": "kya"
+          },
+          {
+            "char": "キュ",
+            "ro": "kyu"
+          },
+          {
+            "char": "キョ",
+            "ro": "kyo"
+          },
+          {
+            "char": "シャ",
+            "ro": "sha"
+          },
+          {
+            "char": "シュ",
+            "ro": "shu"
+          },
+          {
+            "char": "ショ",
+            "ro": "sho"
+          },
+          {
+            "char": "チャ",
+            "ro": "cha"
+          },
+          {
+            "char": "チュ",
+            "ro": "chu"
+          },
+          {
+            "char": "チョ",
+            "ro": "cho"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Sesi 9",
+        "items": [
+          {
+            "char": "ニャ",
+            "ro": "nya"
+          },
+          {
+            "char": "ニュ",
+            "ro": "nyu"
+          },
+          {
+            "char": "ニョ",
+            "ro": "nyo"
+          },
+          {
+            "char": "ヒャ",
+            "ro": "hya"
+          },
+          {
+            "char": "ヒュ",
+            "ro": "hyu"
+          },
+          {
+            "char": "ヒョ",
+            "ro": "hyo"
+          },
+          {
+            "char": "ミャ",
+            "ro": "mya"
+          },
+          {
+            "char": "ミュ",
+            "ro": "myu"
+          },
+          {
+            "char": "ミョ",
+            "ro": "myo"
+          },
+          {
+            "char": "リャ",
+            "ro": "rya"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Sesi 10",
+        "items": [
+          {
+            "char": "リュ",
+            "ro": "ryu"
+          },
+          {
+            "char": "リョ",
+            "ro": "ryo"
+          },
+          {
+            "char": "ギャ",
+            "ro": "gya"
+          },
+          {
+            "char": "ギュ",
+            "ro": "gyu"
+          },
+          {
+            "char": "ギョ",
+            "ro": "gyo"
+          },
+          {
+            "char": "ジャ",
+            "ro": "ja"
+          },
+          {
+            "char": "ジュ",
+            "ro": "ju"
+          },
+          {
+            "char": "ジョ",
+            "ro": "jo"
+          },
+          {
+            "char": "ビャ",
+            "ro": "bya"
+          },
+          {
+            "char": "ビュ",
+            "ro": "byu"
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Sesi 11",
+        "items": [
+          {
+            "char": "ビョ",
+            "ro": "byo"
+          },
+          {
+            "char": "ピャ",
+            "ro": "pya"
+          },
+          {
+            "char": "ピュ",
+            "ro": "pyu"
+          },
+          {
+            "char": "ピョ",
+            "ro": "pyo"
           }
         ]
       }

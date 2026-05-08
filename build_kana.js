@@ -74,6 +74,7 @@ function chunk(arr, size) {
 }
 
 const exportData = {
+  ...oldLevels,
   kana: {
     id: 'kana', label: 'Kana', color: '#ff006e', title: 'Fondasi (Hiragana & Katakana)',
     desc: 'Langkah pertama sebelum memulai JLPT. Pelajari dan ikuti sesi kuis Hiragana & Katakana dari awal hingga mahir.',
@@ -81,8 +82,7 @@ const exportData = {
     katakanaSessions: chunk(katakana, 10).map((items, i) => ({ id: i+1, title: 'Sesi ' + (i+1), items })),
     // We mock these so the UI logic doesn't break
     kanji: [], grammar: [], quiz: [], reading: null, listening: null, writing: []
-  },
-  ...oldLevels
+  }
 };
 
 const output = "export const levels = " + JSON.stringify(exportData, null, 2) + ";\n";
