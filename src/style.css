@@ -960,6 +960,7 @@ body { padding-bottom: 72px; }
   transition: var(--transition);
   text-align: left;
   width: 100%;
+  color: var(--text-primary);
 }
 .tryout-level-btn:hover {
   border-color: var(--border-hover);
