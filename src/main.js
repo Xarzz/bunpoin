@@ -1,4 +1,5 @@
 import { levels } from './data.js';
+import { LESSONS } from './lessons.js';
 
 // ===== TTS (Text-to-Speech) =====
 window.speakJP = function(text) {
@@ -395,6 +396,8 @@ function render() {
     renderSearchPage();
   } else if (page === 'review') {
     renderQuickReview();
+  } else if (page === 'lesson') {
+    renderGuidedLesson(parseInt(params[0]) || 0);
   } else if (page && levels[page]) {
     renderLevelPage(page, params[0] || (page === 'kana' ? 'hiragana' : 'kanji'));
   } else {
@@ -1113,35 +1116,37 @@ window.__currentLevel = null;
 // ===== LEARN PAGE =====
 function renderLearnPage() {
   const steps = [
-    { n: 1, title: "Hiragana Dasar", desc: "Pelajari 46 huruf Hiragana dasar (あ〜ん)", tag: "Kana", link: "#/kana/hiragana" },
-    { n: 2, title: "Katakana Dasar", desc: "Pelajari 46 huruf Katakana dasar (ア〜ン)", tag: "Kana", link: "#/kana/katakana" },
-    { n: 3, title: "Kosakata Perkenalan", desc: "Belajar kata untuk memperkenalkan diri", tag: "N5 Vocab", link: "#/n5/vocab" },
-    { n: 4, title: "Kosakata Keluarga", desc: "Kata-kata tentang anggota keluarga", tag: "N5 Vocab", link: "#/n5/vocab" },
-    { n: 5, title: "Angka & Waktu", desc: "Belajar angka, hari, bulan, dan waktu", tag: "N5 Vocab", link: "#/n5/vocab" },
-    { n: 6, title: "Kanji Dasar N5", desc: "100 Kanji paling dasar untuk JLPT N5", tag: "N5 Kanji", link: "#/n5/kanji" },
-    { n: 7, title: "Grammar N5 Dasar", desc: "Pola kalimat dasar: は、が、を、に、で", tag: "N5 Grammar", link: "#/n5/grammar" },
-    { n: 8, title: "Kosakata Sehari-hari", desc: "Makanan, rumah, transportasi, tempat", tag: "N5 Vocab", link: "#/n5/vocab" },
-    { n: 9, title: "Grammar N5 Lanjutan", desc: "て-form, たい, ている, ましょう", tag: "N5 Grammar", link: "#/n5/grammar" },
-    { n: 10, title: "Kata Kerja & Sifat", desc: "Kata kerja dan kata sifat penting N5", tag: "N5 Vocab", link: "#/n5/vocab" },
-    { n: 11, title: "Quiz N5 — Sesi 1", desc: "Tes pemahamanmu tentang Kanji & Grammar", tag: "Quiz", link: "#/n5/quiz" },
-    { n: 12, title: "Reading N5", desc: "Latihan membaca teks pendek bahasa Jepang", tag: "N5 Reading", link: "#/n5/reading" },
-    { n: 13, title: "Listening N5", desc: "Latihan mendengarkan percakapan dasar", tag: "N5 Listening", link: "#/n5/listening" },
-    { n: 14, title: "Writing N5", desc: "Latihan menulis kalimat sederhana", tag: "N5 Writing", link: "#/n5/writing" },
-    { n: 15, title: "Quiz N5 — Final", desc: "Simulasi ujian JLPT N5 lengkap", tag: "Quiz", link: "#/n5/quiz" },
-    { n: 16, title: "Lanjut ke N4!", desc: "Siap naik level? Mulai perjalanan N4", tag: "N4", link: "#/n4/kanji" },
+    { n: 1, title: "Salam & Sapaan", desc: "Belajar menyapa dan memberi salam dalam bahasa Jepang", tag: "Pelajaran", link: "#/lesson/0" },
+    { n: 2, title: "Perkenalan Diri", desc: "Cara memperkenalkan diri, nama, dan asal", tag: "Pelajaran", link: "#/lesson/1" },
+    { n: 3, title: "Angka & Waktu", desc: "Belajar menghitung dan menyebutkan waktu", tag: "Pelajaran", link: "#/lesson/2" },
+    { n: 4, title: "Keluarga", desc: "Menyebutkan anggota keluarga dalam bahasa Jepang", tag: "Pelajaran", link: "#/lesson/3" },
+    { n: 5, title: "Di Restoran", desc: "Cara memesan makanan dan berbicara di restoran", tag: "Pelajaran", link: "#/lesson/4" },
+    { n: 6, title: "Arah & Transportasi", desc: "Bertanya dan memberi arah, naik kereta/bus", tag: "Pelajaran", link: "#/lesson/5" },
+    { n: 7, title: "Belanja", desc: "Percakapan saat berbelanja di toko", tag: "Pelajaran", link: "#/lesson/6" },
+    { n: 8, title: "Kehidupan Sehari-hari", desc: "Aktivitas harian, hobi, dan rutinitas", tag: "Pelajaran", link: "#/lesson/7" },
+    { n: 9, title: "Hiragana Dasar", desc: "Pelajari 46 huruf Hiragana dasar (あ〜ん)", tag: "Kana", link: "#/kana/hiragana" },
+    { n: 10, title: "Katakana Dasar", desc: "Pelajari 46 huruf Katakana dasar (ア〜ン)", tag: "Kana", link: "#/kana/katakana" },
+    { n: 11, title: "Kanji Dasar N5", desc: "100 Kanji paling dasar untuk JLPT N5", tag: "N5 Kanji", link: "#/n5/kanji" },
+    { n: 12, title: "Grammar N5", desc: "Pola kalimat dasar: は、が、を、に、で", tag: "N5 Grammar", link: "#/n5/grammar" },
+    { n: 13, title: "Kosakata N5", desc: "800 kosakata penting untuk JLPT N5", tag: "N5 Vocab", link: "#/n5/vocab" },
+    { n: 14, title: "Quiz N5", desc: "Tes pemahamanmu tentang semua materi N5", tag: "Quiz", link: "#/n5/quiz" },
+    { n: 15, title: "Lanjut ke N4!", desc: "Siap naik level? Mulai perjalanan N4", tag: "N4", link: "#/n4/kanji" },
   ];
+
+  const p = getProgress();
+  const completedLessons = p.completedLessons || [];
 
   app.innerHTML = `
     <div class="learn-page">
       <div class="learn-header">
         <h1>📖 Alur Belajar</h1>
-        <p>Ikuti tahapan belajar terstruktur dari nol hingga JLPT N5</p>
+        <p>Ikuti pelajaran terstruktur — pahami dulu, baru quiz!</p>
       </div>
       <div class="learn-path">
         ${steps.map((s, i) => `
           <div class="learn-step">
             <div class="learn-step-line">
-              <div class="learn-step-dot ${i === 0 ? 'active' : ''}">${s.n}</div>
+              <div class="learn-step-dot ${completedLessons.includes(i) ? 'completed' : i === 0 ? 'active' : ''}">${completedLessons.includes(i) ? '✓' : s.n}</div>
               ${i < steps.length - 1 ? '<div class="learn-step-connector"></div>' : ''}
             </div>
             <div class="learn-step-content" onclick="location.hash='${s.link}'">
@@ -1154,6 +1159,137 @@ function renderLearnPage() {
       </div>
     </div>
   `;
+}
+
+// ===== GUIDED LESSON =====
+function renderGuidedLesson(idx) {
+  const lesson = LESSONS[idx];
+  if (!lesson) { location.hash = '#/learn'; return; }
+  let step = 0; // 0=intro, 1=vocab, 2=grammar, 3=dialog, 4=quiz
+  let qIdx = 0, qScore = 0, qAnswered = false, qWrongs = [];
+
+  function render() {
+    const totalSteps = 5;
+    const progressPct = ((step + 1) / totalSteps) * 100;
+    let content = '';
+
+    if (step === 0) {
+      content = `
+        <div class="lesson-slide">
+          <div class="lesson-emoji">${lesson.emoji}</div>
+          <h2>${lesson.title}</h2>
+          <p class="lesson-intro-text">${lesson.intro}</p>
+          <div class="lesson-tip"><strong>💡 Tips:</strong> Baca pelan-pelan dan pahami konteksnya. Setelah ini kamu akan belajar kosakata, tata bahasa, dialog, lalu quiz!</div>
+        </div>`;
+    } else if (step === 1) {
+      content = `
+        <div class="lesson-slide">
+          <h2>📝 Kosakata</h2>
+          <p style="color:var(--text-muted);margin-bottom:16px;">Pelajari kata-kata penting untuk topik ini. Tap 🔊 untuk dengar pelafalan!</p>
+          <div class="lesson-vocab-list">
+            ${lesson.vocab.map(v => `
+              <div class="lesson-vocab-item" onclick="speakJP('${v.jp.replace(/'/g, "\\\\'")}')">
+                <div class="lesson-vocab-jp">${v.jp} <span class="tts-btn">🔊</span></div>
+                <div class="lesson-vocab-ro">${v.ro}</div>
+                <div class="lesson-vocab-id">${v.id}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>`;
+    } else if (step === 2) {
+      content = `
+        <div class="lesson-slide">
+          <h2>📖 Tata Bahasa</h2>
+          <p style="color:var(--text-muted);margin-bottom:16px;">Pola kalimat yang akan sering kamu gunakan.</p>
+          ${lesson.grammar.map(g => `
+            <div class="lesson-grammar-card">
+              <div class="lesson-grammar-pattern">${g.pattern}</div>
+              <div class="lesson-grammar-meaning">${g.meaning}</div>
+              <div class="lesson-grammar-example" onclick="speakJP('${g.example.replace(/'/g, "\\\\'")}')">${g.example} <span class="tts-btn">🔊</span></div>
+              <div class="lesson-grammar-trans">${g.trans}</div>
+            </div>
+          `).join('')}
+        </div>`;
+    } else if (step === 3) {
+      content = `
+        <div class="lesson-slide">
+          <h2>💬 Contoh Percakapan</h2>
+          <p style="color:var(--text-muted);margin-bottom:16px;">Perhatikan bagaimana kata dan pola tadi dipakai dalam dialog nyata!</p>
+          <div class="lesson-dialog">
+            ${lesson.dialog.map(d => `
+              <div class="lesson-dialog-bubble ${d.speaker === 'A' || d.speaker === 'Kamu' ? 'right' : 'left'}">
+                <div class="lesson-dialog-speaker">${d.speaker}</div>
+                <div class="lesson-dialog-jp" onclick="speakJP('${d.jp.replace(/'/g, "\\\\'")}')">${d.jp} <span class="tts-btn" style="font-size:0.8rem;">🔊</span></div>
+                <div class="lesson-dialog-id">${d.id}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>`;
+    } else if (step === 4) {
+      if (qIdx >= lesson.quiz.length) {
+        const pct = Math.round((qScore / lesson.quiz.length) * 100);
+        const p = getProgress();
+        p.completedLessons = p.completedLessons || [];
+        if (!p.completedLessons.includes(idx)) p.completedLessons.push(idx);
+        saveProgress(p);
+        if (pct >= 80) setTimeout(() => launchConfetti(), 300);
+        content = `
+          <div class="lesson-slide">
+            <div class="quiz-result">
+              <div class="result-score">${pct}%</div>
+              <h2>${pct >= 80 ? '素晴らしい！ Hebat!' : pct >= 50 ? 'いいですね！ Bagus!' : 'もう少し！ Coba lagi!'}</h2>
+              <p>Skor: ${qScore} / ${lesson.quiz.length}</p>
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px;max-width:300px;margin:24px auto;">
+                <button class="btn btn-primary" style="width:100%;" onclick="location.hash='#/learn'">Kembali ke Alur Belajar</button>
+                ${idx + 1 < LESSONS.length ? `<button class="btn btn-info" style="width:100%;" onclick="location.hash='#/lesson/${idx + 1}'">Pelajaran Berikutnya →</button>` : ''}
+              </div>
+            </div>
+            ${qWrongs.length > 0 ? `<div class="review-section"><h3>❌ Review (${qWrongs.length})</h3>${qWrongs.map(w => `<div class="review-item"><div class="review-q">${w.q}</div><div class="review-wrong">Jawabanmu: ${w.yourAns}</div><div class="review-correct">Jawaban benar: ${w.correctAns}</div></div>`).join('')}</div>` : ''}
+          </div>`;
+      } else {
+        const q = lesson.quiz[qIdx];
+        content = `
+          <div class="lesson-slide">
+            <h2>🧩 Quiz (${qIdx + 1}/${lesson.quiz.length})</h2>
+            <div class="quiz-question-card"><div class="quiz-question">${q.q}</div></div>
+            <div class="quiz-options">
+              ${q.opts.map((o, i) => `<button class="quiz-option" id="lq-${i}" onclick="window.__lessonAnswer(${i}, ${q.ans})"><span class="opt-letter">${String.fromCharCode(65 + i)}</span><span>${o}</span></button>`).join('')}
+            </div>
+          </div>`;
+      }
+    }
+
+    app.innerHTML = `
+      <div class="lesson-page">
+        <div class="lesson-progress-bar"><div class="lesson-progress-fill" style="width:${progressPct}%"></div></div>
+        <div class="lesson-nav-top">
+          <button class="btn btn-outline btn-sm" onclick="location.hash='#/learn'">✕ Keluar</button>
+          <span class="lesson-step-label">${['Pengantar','Kosakata','Tata Bahasa','Dialog','Quiz'][step]}</span>
+        </div>
+        ${content}
+        <div class="lesson-nav-bottom">
+          ${step > 0 && !(step === 4 && qIdx >= lesson.quiz.length) ? `<button class="btn btn-outline" onclick="window.__lessonPrev()">← Sebelumnya</button>` : '<div></div>'}
+          ${step < 4 ? `<button class="btn btn-primary" onclick="window.__lessonNext()">Lanjut →</button>` : '<div></div>'}
+        </div>
+      </div>`;
+  }
+
+  window.__lessonNext = () => { if (step < 4) { step++; render(); window.scrollTo(0,0); } };
+  window.__lessonPrev = () => { if (step > 0) { step--; render(); window.scrollTo(0,0); } };
+  window.__lessonAnswer = (sel, cor) => {
+    if (qAnswered) return;
+    qAnswered = true;
+    document.getElementById(`lq-${cor}`).classList.add('correct');
+    if (sel !== cor) {
+      document.getElementById(`lq-${sel}`).classList.add('wrong');
+      haptic('error');
+      const q = lesson.quiz[qIdx];
+      qWrongs.push({ q: q.q, yourAns: q.opts[sel], correctAns: q.opts[cor] });
+    } else { haptic('success'); qScore++; }
+    setTimeout(() => { qIdx++; qAnswered = false; render(); }, 1000);
+  };
+
+  render();
 }
 
 // ===== TRYOUT PAGE =====
