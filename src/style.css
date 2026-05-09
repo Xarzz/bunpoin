@@ -57,7 +57,9 @@ html.dark .bottom-nav {
 html.dark .modal-content {
   background: #1e293b;
 }
-
+html.dark .navbar {
+  background: rgba(15, 23, 42, 0.85);
+}
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
@@ -814,11 +816,12 @@ body { padding-bottom: 72px; }
 .bottom-nav-item.active svg {
   stroke: var(--accent-primary);
 }
-.bottom-nav-item:hover {
-  color: var(--accent-primary);
-  background: var(--accent-primary-bg);
+@media (hover: hover) {
+  .bottom-nav-item:hover {
+    color: var(--accent-primary);
+    background: var(--accent-primary-bg);
+  }
 }
-
 /* Hide bottom nav on desktop */
 @media (min-width: 768px) {
   .bottom-nav { display: none; }

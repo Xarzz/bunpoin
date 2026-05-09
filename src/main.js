@@ -410,13 +410,18 @@ function updateBottomNav() {
   const [page] = currentRoute.split('/').filter(Boolean);
   nav.querySelectorAll('.bottom-nav-item').forEach(btn => {
     const tab = btn.dataset.tab;
-    btn.classList.toggle('active',
-      (!page && tab === 'home') ||
-      (page === 'learn' && tab === 'learn') ||
-      (page === 'tryout' && tab === 'tryout') ||
-      (page === 'profile' && tab === 'profile') ||
-      (page && levels[page] && tab === 'tryout')
-    );
+    // Remove active from all first
+    btn.classList.remove('active');
+    
+    // Determine which tab should be active
+    const isHome = !page && tab === 'home';
+    const isLearn = (page === 'learn' && tab === 'learn') || (page && levels[page] && tab === 'learn');
+    const isTryout = page === 'tryout' && tab === 'tryout';
+    const isProfile = page === 'profile' && tab === 'profile';
+    
+    if (isHome || isLearn || isTryout || isProfile) {
+      btn.classList.add('active');
+    }
   });
 }
 
