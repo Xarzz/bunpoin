@@ -714,12 +714,31 @@ window.openSessionModal = function(skill) {
   else if (skill === 'vocab') sessions = l.vocabSessions || [];
 
   const sessionListEl = document.getElementById('session-list');
-  sessionListEl.innerHTML = sessions.map((s, idx) => `
-    <button class="session-picker-btn" onclick="document.getElementById('session-modal').classList.remove('active'); startCustomQuiz('${skill}', ${idx});">
-      <span>${s.title}</span>
-      <span class="item-count">${s.items.length} item</span>
-    </button>
-  `).join('');
+  sessionListEl.innerHTML = sessions.map((s, idx) => {
+    const firstItem = s.items[0];
+    const lastItem = s.items[s.items.length - 1];
+    let desc = s.desc || '';
+    
+    if (!desc && firstItem && lastItem) {
+      if (skill === 'hiragana' || skill === 'katakana') {
+        desc = `${firstItem.ro} - ${lastItem.ro}`;
+      } else if (skill === 'kanji') {
+        desc = `${firstItem.char} - ${lastItem.char}`;
+      } else if (skill === 'vocab') {
+        desc = `${firstItem.jp} - ${lastItem.jp}`;
+      }
+    }
+
+    return `
+      <button class="session-picker-btn" onclick="document.getElementById('session-modal').classList.remove('active'); startCustomQuiz('${skill}', ${idx});">
+        <div class="session-picker-info">
+          <span class="session-picker-title">${s.title}</span>
+          ${desc ? `<span class="session-picker-desc">${desc}</span>` : ''}
+        </div>
+        <span class="item-count">${s.items.length} item</span>
+      </button>
+    `;
+  }).join('');
 
   document.getElementById('session-modal').classList.add('active');
 };
