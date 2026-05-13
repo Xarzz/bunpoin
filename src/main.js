@@ -721,7 +721,13 @@ window.openSessionModal = function(skill) {
     
     if (!desc && firstItem && lastItem) {
       if (skill === 'hiragana' || skill === 'katakana') {
-        desc = `${firstItem.ro} - ${lastItem.ro}`;
+        // Show first and 6th item (start of each 5-char row)
+        const row2Start = s.items[5];
+        if (row2Start) {
+          desc = `${firstItem.ro} - ${row2Start.ro}`;
+        } else {
+          desc = firstItem.ro;
+        }
       } else if (skill === 'kanji') {
         desc = `${firstItem.char} - ${lastItem.char}`;
       } else if (skill === 'vocab') {
