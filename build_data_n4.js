@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { levels as oldLevels } from './src/data.js';
+import { vocabN4 } from './vocab_n4.js';
 
 const n4KanjiStr = `
 会:カイ:あ.う:Bertemu
@@ -188,6 +189,7 @@ exportData.n4 = {
   vocabCount: '~1500 Kosakata',
   kanji: n4Kanji,
   grammar: n4Grammar,
+  vocabSessions: vocabN4,
   quiz: [
     { type: 'kanji', q: '「会社」の読み方は？', opts: ['かいしゃ', 'がっこう', 'びょういん', 'えき'], ans: 0 },
     { type: 'grammar', q: '「写真を撮って＿＿いいですか。」', opts: ['は', 'が', 'も', 'に'], ans: 2 },

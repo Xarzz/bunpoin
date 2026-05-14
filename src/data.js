@@ -8218,7 +8218,6 @@ export const levels = {
     ],
     "vocabSessions": [
       {
-        "id": 1,
         "title": "Perasaan (Feelings)",
         "items": [
           {
@@ -8274,7 +8273,6 @@ export const levels = {
         ]
       },
       {
-        "id": 2,
         "title": "Pekerjaan (Occupation)",
         "items": [
           {
@@ -8330,7 +8328,6 @@ export const levels = {
         ]
       },
       {
-        "id": 3,
         "title": "Kesehatan (Health)",
         "items": [
           {
@@ -8386,7 +8383,6 @@ export const levels = {
         ]
       },
       {
-        "id": 4,
         "title": "Belanja (Shopping)",
         "items": [
           {
@@ -8442,7 +8438,6 @@ export const levels = {
         ]
       },
       {
-        "id": 5,
         "title": "Perjalanan (Travel)",
         "items": [
           {
@@ -8498,7 +8493,6 @@ export const levels = {
         ]
       },
       {
-        "id": 6,
         "title": "Hobi (Hobbies)",
         "items": [
           {
@@ -8554,7 +8548,6 @@ export const levels = {
         ]
       },
       {
-        "id": 7,
         "title": "Komputer & Teknologi (Tech)",
         "items": [
           {
@@ -8610,7 +8603,6 @@ export const levels = {
         ]
       },
       {
-        "id": 8,
         "title": "Kata Kerja N4 - 1",
         "items": [
           {
@@ -8666,7 +8658,6 @@ export const levels = {
         ]
       },
       {
-        "id": 9,
         "title": "Kata Kerja N4 - 2",
         "items": [
           {
@@ -8722,7 +8713,6 @@ export const levels = {
         ]
       },
       {
-        "id": 10,
         "title": "Kata Sifat N4",
         "items": [
           {
@@ -8778,7 +8768,6 @@ export const levels = {
         ]
       },
       {
-        "id": 11,
         "title": "Masyarakat (Society)",
         "items": [
           {
@@ -8834,7 +8823,6 @@ export const levels = {
         ]
       },
       {
-        "id": 12,
         "title": "Pendidikan (Education)",
         "items": [
           {
