@@ -1190,11 +1190,12 @@ function renderLearnPage() {
 function renderGuidedLesson(idx) {
   const lesson = LESSONS[idx];
   if (!lesson) { location.hash = '#/learn'; return; }
-  let step = 0; // 0=intro, 1=vocab, 2=grammar, 3=dialog, 4=quiz
+  let step = 0; // 0=intro, 1=vocab, 2=grammar, 3=dialog, 4=quiz, 5=drilling
   let qIdx = 0, qScore = 0, qAnswered = false, qWrongs = [];
+  let dIdx = 0, dScore = 0, dQuestions = [], dWrongs = [];
 
   function render() {
-    const totalSteps = 5;
+    const totalSteps = step === 5 ? 6 : 5;
     const progressPct = ((step + 1) / totalSteps) * 100;
     let content = '';
 
@@ -1265,7 +1266,8 @@ function renderGuidedLesson(idx) {
               <h2>${pct >= 80 ? '素晴らしい！ Hebat!' : pct >= 50 ? 'いいですね！ Bagus!' : 'もう少し！ Coba lagi!'}</h2>
               <p>Skor: ${qScore} / ${lesson.quiz.length}</p>
               <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px;max-width:300px;margin:24px auto;">
-                <button class="btn btn-primary" style="width:100%;" onclick="location.hash='#/learn'">Kembali ke Alur Belajar</button>
+                <button class="btn btn-primary" style="width:100%;" onclick="window.__startDrilling()">🔥 Lanjut Drilling Topik Ini</button>
+                <button class="btn btn-outline" style="width:100%;" onclick="location.hash='#/learn'">Kembali ke Alur Belajar</button>
                 ${idx + 1 < LESSONS.length ? `<button class="btn btn-info" style="width:100%;" onclick="location.hash='#/lesson/${idx + 1}'">Pelajaran Berikutnya →</button>` : ''}
               </div>
             </div>
@@ -1282,6 +1284,35 @@ function renderGuidedLesson(idx) {
             </div>
           </div>`;
       }
+    } else if (step === 5) {
+      if (dIdx >= dQuestions.length) {
+        const pct = Math.round((dScore / dQuestions.length) * 100);
+        if (pct >= 80) setTimeout(() => launchConfetti(), 300);
+        content = `
+          <div class="lesson-slide">
+            <div class="quiz-result">
+              <div class="result-score">${pct}%</div>
+              <h2>Drilling Selesai!</h2>
+              <p>Skor: ${dScore} / ${dQuestions.length}</p>
+              <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px;max-width:300px;margin:24px auto;">
+                <button class="btn btn-primary" style="width:100%;" onclick="window.__startDrilling()">🔄 Coba Lagi Acak</button>
+                <button class="btn btn-outline" style="width:100%;" onclick="location.hash='#/learn'">Kembali ke Alur Belajar</button>
+                ${idx + 1 < LESSONS.length ? `<button class="btn btn-info" style="width:100%;" onclick="location.hash='#/lesson/${idx + 1}'">Pelajaran Berikutnya →</button>` : ''}
+              </div>
+            </div>
+            ${dWrongs.length > 0 ? `<div class="review-section"><h3>❌ Review (${dWrongs.length})</h3>${dWrongs.map(w => `<div class="review-item"><div class="review-q">${w.q}</div><div class="review-wrong">Jawabanmu: ${w.yourAns}</div><div class="review-correct">Jawaban benar: ${w.correctAns}</div></div>`).join('')}</div>` : ''}
+          </div>`;
+      } else {
+        const q = dQuestions[dIdx];
+        content = `
+          <div class="lesson-slide">
+            <h2>🔥 Drilling (${dIdx + 1}/${dQuestions.length})</h2>
+            <div class="quiz-question-card"><div class="quiz-question">${q.q}</div></div>
+            <div class="quiz-options">
+              ${q.opts.map((o, i) => `<button class="quiz-option" id="dq-${i}" onclick="window.__drillingAnswer(${i}, ${q.ans})"><span class="opt-letter">${String.fromCharCode(65 + i)}</span><span>${o}</span></button>`).join('')}
+            </div>
+          </div>`;
+      }
     }
 
     app.innerHTML = `
@@ -1289,11 +1320,11 @@ function renderGuidedLesson(idx) {
         <div class="lesson-progress-bar"><div class="lesson-progress-fill" style="width:${progressPct}%"></div></div>
         <div class="lesson-nav-top">
           <button class="btn btn-outline btn-sm" onclick="location.hash='#/learn'">✕ Keluar</button>
-          <span class="lesson-step-label">${['Pengantar','Kosakata','Tata Bahasa','Dialog','Quiz'][step]}</span>
+          <span class="lesson-step-label">${['Pengantar','Kosakata','Tata Bahasa','Dialog','Quiz','Drilling'][step]}</span>
         </div>
         ${content}
         <div class="lesson-nav-bottom">
-          ${step > 0 && !(step === 4 && qIdx >= lesson.quiz.length) ? `<button class="btn btn-outline" onclick="window.__lessonPrev()">← Sebelumnya</button>` : '<div></div>'}
+          ${step > 0 && step < 5 && !(step === 4 && qIdx >= lesson.quiz.length) ? `<button class="btn btn-outline" onclick="window.__lessonPrev()">← Sebelumnya</button>` : '<div></div>'}
           ${step < 4 ? `<button class="btn btn-primary" onclick="window.__lessonNext()">Lanjut →</button>` : '<div></div>'}
         </div>
       </div>`;
@@ -1312,6 +1343,52 @@ function renderGuidedLesson(idx) {
       qWrongs.push({ q: q.q, yourAns: q.opts[sel], correctAns: q.opts[cor] });
     } else { haptic('success'); qScore++; }
     setTimeout(() => { qIdx++; qAnswered = false; render(); }, 1000);
+  };
+
+  window.__startDrilling = () => {
+    const pool = [];
+    if (lesson.vocab) {
+      lesson.vocab.forEach(v => {
+        pool.push({ type: 'vocab_jp', q: `Arti dari 「${v.jp}」 adalah?`, ansText: v.id });
+        pool.push({ type: 'vocab_id', q: `Bahasa Jepangnya "${v.id}" adalah?`, ansText: v.jp });
+      });
+    }
+    pool.sort(() => Math.random() - 0.5);
+    
+    // Choose up to 10 questions for a quick drilling session
+    const selected = pool.slice(0, 10);
+    
+    dQuestions = selected.map(item => {
+      let wrongOpts = [];
+      if (item.type === 'vocab_jp') {
+        wrongOpts = lesson.vocab.filter(v => v.id !== item.ansText).map(v => v.id);
+      } else {
+        wrongOpts = lesson.vocab.filter(v => v.jp !== item.ansText).map(v => v.jp);
+      }
+      wrongOpts.sort(() => Math.random() - 0.5);
+      const opts = [item.ansText, ...wrongOpts.slice(0, 3)].sort(() => Math.random() - 0.5);
+      return { q: item.q, opts: opts, ans: opts.indexOf(item.ansText) };
+    });
+    
+    step = 5;
+    dIdx = 0;
+    dScore = 0;
+    dWrongs = [];
+    render();
+    window.scrollTo(0,0);
+  };
+
+  window.__drillingAnswer = (sel, cor) => {
+    if (qAnswered) return;
+    qAnswered = true;
+    document.getElementById(`dq-${cor}`).classList.add('correct');
+    if (sel !== cor) {
+      document.getElementById(`dq-${sel}`).classList.add('wrong');
+      haptic('error');
+      const q = dQuestions[dIdx];
+      dWrongs.push({ q: q.q, yourAns: q.opts[sel], correctAns: q.opts[cor] });
+    } else { haptic('success'); dScore++; }
+    setTimeout(() => { dIdx++; qAnswered = false; render(); }, 800);
   };
 
   render();
