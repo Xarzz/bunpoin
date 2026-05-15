@@ -1353,18 +1353,29 @@ function renderGuidedLesson(idx) {
         pool.push({ type: 'vocab_id', q: `Bahasa Jepangnya "${v.id}" adalah?`, ansText: v.jp });
       });
     }
+    if (lesson.grammar) {
+      lesson.grammar.forEach(g => {
+        pool.push({ type: 'grammar_jp', q: `Arti dari pola 「${g.pattern}」 adalah?`, ansText: g.meaning });
+        pool.push({ type: 'grammar_id', q: `Pola kalimat untuk "${g.meaning}" adalah?`, ansText: g.pattern });
+      });
+    }
     pool.sort(() => Math.random() - 0.5);
     
-    // Choose up to 10 questions for a quick drilling session
-    const selected = pool.slice(0, 10);
+    // Choose up to 30 questions for a comprehensive drilling session
+    const selected = pool.slice(0, 30);
     
     dQuestions = selected.map(item => {
       let wrongOpts = [];
       if (item.type === 'vocab_jp') {
         wrongOpts = lesson.vocab.filter(v => v.id !== item.ansText).map(v => v.id);
-      } else {
+      } else if (item.type === 'vocab_id') {
         wrongOpts = lesson.vocab.filter(v => v.jp !== item.ansText).map(v => v.jp);
+      } else if (item.type === 'grammar_jp') {
+        wrongOpts = lesson.grammar.filter(g => g.meaning !== item.ansText).map(g => g.meaning);
+      } else if (item.type === 'grammar_id') {
+        wrongOpts = lesson.grammar.filter(g => g.pattern !== item.ansText).map(g => g.pattern);
       }
+      
       wrongOpts.sort(() => Math.random() - 0.5);
       const opts = [item.ansText, ...wrongOpts.slice(0, 3)].sort(() => Math.random() - 0.5);
       return { q: item.q, opts: opts, ans: opts.indexOf(item.ansText) };
