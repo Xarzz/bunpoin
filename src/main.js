@@ -979,32 +979,44 @@ window.startCustomQuiz = function(skill, sessionIdx) {
       });
     }
   } else if (isVocab) {
-    // Vocab quiz: tampilkan arti Indonesia, jawab dengan bahasa Jepang
-    for (let i = 0; i < Math.min(items.length, 10); i++) {
-      const target = items[i];
-      
-      // Pick 3 random distractors from ALL vocab sessions
+    // Vocab quiz: both directions (JP -> ID and ID -> JP)
+    items.forEach(target => {
       const allVocab = (l.vocabSessions || []).reduce((acc, s) => acc.concat(s.items), []);
-      const distractors = new Set();
-      while(distractors.size < 3) {
+      
+      // Question 1: ID -> JP
+      const distractors1 = new Set();
+      while(distractors1.size < 3) {
         const rand = allVocab[Math.floor(Math.random() * allVocab.length)];
-        if (rand.jp !== target.jp) {
-          distractors.add(rand.jp);
-        }
+        if (rand.jp !== target.jp) distractors1.add(rand.jp);
       }
-      
-      const opts = Array.from(distractors);
-      const ansPos = Math.floor(Math.random() * 4);
-      opts.splice(ansPos, 0, target.jp);
-      
+      const opts1 = Array.from(distractors1);
+      const ansPos1 = Math.floor(Math.random() * 4);
+      opts1.splice(ansPos1, 0, target.jp);
       questions.push({
         type: sessions[sessionIdx].title,
         q: `Apa bahasa Jepang dari "${target.id}"?`,
-        opts: opts,
-        ans: ansPos
+        opts: opts1,
+        ans: ansPos1
       });
-    }
-    // Shuffle
+
+      // Question 2: JP -> ID
+      const distractors2 = new Set();
+      while(distractors2.size < 3) {
+        const rand = allVocab[Math.floor(Math.random() * allVocab.length)];
+        if (rand.id !== target.id) distractors2.add(rand.id);
+      }
+      const opts2 = Array.from(distractors2);
+      const ansPos2 = Math.floor(Math.random() * 4);
+      opts2.splice(ansPos2, 0, target.id);
+      questions.push({
+        type: sessions[sessionIdx].title,
+        q: `Apa arti dari 「${target.jp}」?`,
+        opts: opts2,
+        ans: ansPos2
+      });
+    });
+    
+    // Shuffle the questions so JP and ID aren't back-to-back predictably
     questions.sort(() => Math.random() - 0.5);
   } else {
     for (let i = 0; i < 10; i++) {
