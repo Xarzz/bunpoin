@@ -1077,6 +1077,67 @@ window.startCustomQuiz = function(skill, sessionIdx) {
   renderQuizQuestion(document.getElementById('skill-content'));
 };
 
+window.startKanaWordQuiz = function(skill) {
+  const isHiragana = skill === 'hiragana';
+  const wordPool = isHiragana ? [
+    {jp: 'さくら', ro: 'sakura'}, {jp: 'ねこ', ro: 'neko'}, {jp: 'いぬ', ro: 'inu'}, {jp: 'とり', ro: 'tori'}, 
+    {jp: 'やま', ro: 'yama'}, {jp: 'かわ', ro: 'kawa'}, {jp: 'あめ', ro: 'ame'}, {jp: 'ゆき', ro: 'yuki'}, 
+    {jp: 'うみ', ro: 'umi'}, {jp: 'そら', ro: 'sora'}, {jp: 'くるま', ro: 'kuruma'}, {jp: 'ほん', ro: 'hon'}, 
+    {jp: 'がっこう', ro: 'gakkou'}, {jp: 'せんせい', ro: 'sensei'}, {jp: 'がくせい', ro: 'gakusei'}, 
+    {jp: 'おはよう', ro: 'ohayou'}, {jp: 'ありがとう', ro: 'arigatou'}, {jp: 'さようなら', ro: 'sayounara'},
+    {jp: 'りんご', ro: 'ringo'}, {jp: 'みかん', ro: 'mikan'}, {jp: 'いちご', ro: 'ichigo'}, {jp: 'すいか', ro: 'suika'},
+    {jp: 'たべもの', ro: 'tabemono'}, {jp: 'のみもの', ro: 'nomimono'}, {jp: 'くだもの', ro: 'kudamono'}, {jp: 'やさい', ro: 'yasai'},
+    {jp: 'でんしゃ', ro: 'densha'}, {jp: 'ひこうき', ro: 'hikouki'}, {jp: 'ふね', ro: 'fune'}, {jp: 'じてんしゃ', ro: 'jitensha'},
+    {jp: 'にほん', ro: 'nihon'}, {jp: 'かぞく', ro: 'kazoku'}, {jp: 'ともだち', ro: 'tomodachi'}, {jp: 'ひと', ro: 'hito'},
+    {jp: 'おとこ', ro: 'otoko'}, {jp: 'おんな', ro: 'onna'}, {jp: 'こども', ro: 'kodomo'}, {jp: 'おとな', ro: 'otona'}
+  ] : [
+    {jp: 'カメラ', ro: 'kamera'}, {jp: 'テレビ', ro: 'terebi'}, {jp: 'パソコン', ro: 'pasokon'}, {jp: 'スマホ', ro: 'sumaho'}, 
+    {jp: 'コーヒー', ro: 'ko-hi-'}, {jp: 'パン', ro: 'pan'}, {jp: 'ケーキ', ro: 'ke-ki'}, {jp: 'バス', ro: 'basu'}, 
+    {jp: 'タクシー', ro: 'takushi-'}, {jp: 'ホテル', ro: 'hoteru'}, {jp: 'レストラン', ro: 'resutoran'}, 
+    {jp: 'スーパー', ro: 'su-pa-'}, {jp: 'コンビニ', ro: 'konbini'}, {jp: 'トイレ', ro: 'toire'}, 
+    {jp: 'アメリカ', ro: 'amerika'}, {jp: 'インドネシア', ro: 'indonesia'}, {jp: 'ギター', ro: 'gita-'}, {jp: 'ピアノ', ro: 'piano'},
+    {jp: 'ジュース', ro: 'ju-su'}, {jp: 'ミルク', ro: 'miruku'}, {jp: 'ビール', ro: 'bi-ru'}, {jp: 'アニメ', ro: 'anime'},
+    {jp: 'マンガ', ro: 'manga'}, {jp: 'ゲーム', ro: 'ge-mu'}, {jp: 'スポーツ', ro: 'supo-tsu'}, {jp: 'サッカー', ro: 'sakka-'},
+    {jp: 'テニス', ro: 'tenisu'}, {jp: 'ニュース', ro: 'nyu-su'}, {jp: 'ペン', ro: 'pen'}, {jp: 'ノート', ro: 'no-to'},
+    {jp: 'シャツ', ro: 'shatsu'}, {jp: 'パンツ', ro: 'pantsu'}, {jp: 'スカート', ro: 'suka-to'}, {jp: 'ドレス', ro: 'doresu'}
+  ];
+
+  // Pick up to 20 random words
+  wordPool.sort(() => Math.random() - 0.5);
+  const selected = wordPool.slice(0, 20);
+  
+  const questions = selected.map((item, idx) => {
+    const distractors = new Set();
+    while (distractors.size < 3) {
+      const rand = wordPool[Math.floor(Math.random() * wordPool.length)];
+      if (rand.ro !== item.ro) distractors.add(rand.ro);
+    }
+    const opts = Array.from(distractors);
+    const ansPos = Math.floor(Math.random() * 4);
+    opts.splice(ansPos, 0, item.ro);
+    return {
+      type: 'Membaca Kata ' + (idx + 1) + '/20',
+      q: `Cara membaca kata 「${item.jp}」 adalah?`,
+      opts: opts,
+      ans: ansPos
+    };
+  });
+
+  quizState = {
+    current: 0,
+    questions: questions,
+    score: 0,
+    answered: false,
+    wrongs: [],
+    timerId: null,
+    isCustom: true,
+    skill: skill + '_word',
+    sessionIdx: -1
+  };
+  
+  renderQuizQuestion(document.getElementById('skill-content'));
+};
+
 function renderReading(el, l) {
   const r = l.reading;
   let html = `
