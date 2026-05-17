@@ -629,7 +629,10 @@ function renderKana(el, l, skill) {
   el.innerHTML = `
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:16px;">
       <h2 style="margin:0">${skill === 'hiragana' ? 'Hiragana (ひらがな)' : 'Katakana (カタカナ)'}</h2>
-      <button class="btn btn-primary" onclick="window.openSessionModal('${skill}')">Pilih Sesi Quiz 🎮</button>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <button class="btn btn-info" onclick="window.startKanaWordQuiz('${skill}')">Quiz Baca Kata 📖</button>
+        <button class="btn btn-primary" onclick="window.openSessionModal('${skill}')">Pilih Sesi Huruf 🎮</button>
+      </div>
     </div>
     <div class="kana-chart-container">
       ${layoutHtml}
@@ -816,21 +819,25 @@ function renderQuizQuestion(el) {
     let retryAction = '';
     
     if (isCustom) {
-      retryAction = `startCustomQuiz('${skill}', ${sessionIdx})`;
-      
-      const l = window.__currentLevel;
-      let totalSessions = 0;
-      if (skill === 'hiragana') totalSessions = l.hiraganaSessions.length;
-      else if (skill === 'katakana') totalSessions = l.katakanaSessions.length;
-      else if (skill === 'kanji') totalSessions = l.kanjiSessions.length;
-      else if (skill === 'vocab') totalSessions = (l.vocabSessions || []).length;
-      
-      if (sessionIdx + 1 < totalSessions) {
-        extraButtons += `<button class="btn btn-info" onclick="startCustomQuiz('${skill}', ${sessionIdx + 1})">Lanjut Sesi Berikutnya</button>`;
+      if (skill.endsWith('_word')) {
+        const baseSkill = skill.split('_')[0];
+        retryAction = `startKanaWordQuiz('${baseSkill}')`;
+        extraButtons += `<button class="btn btn-outline" onclick="renderSkillContent(document.getElementById('skill-content'), '${l.id}', '${baseSkill}')">Kembali ke Daftar</button>`;
+      } else {
+        retryAction = `startCustomQuiz('${skill}', ${sessionIdx})`;
+        let totalSessions = 0;
+        if (skill === 'hiragana') totalSessions = l.hiraganaSessions.length;
+        else if (skill === 'katakana') totalSessions = l.katakanaSessions.length;
+        else if (skill === 'kanji') totalSessions = l.kanjiSessions.length;
+        else if (skill === 'vocab') totalSessions = (l.vocabSessions || []).length;
+        
+        if (sessionIdx + 1 < totalSessions) {
+          extraButtons += `<button class="btn btn-info" onclick="startCustomQuiz('${skill}', ${sessionIdx + 1})">Lanjut Sesi Berikutnya</button>`;
+        }
+        extraButtons += `<button class="btn btn-outline" onclick="window.openSessionModal('${skill}')">Pilih Sesi Lain</button>`;
+        // Button to go back to chart view
+        extraButtons += `<button class="btn btn-outline" onclick="renderSkillContent(document.getElementById('skill-content'), '${l.id}', '${skill}')">Kembali ke Daftar</button>`;
       }
-      extraButtons += `<button class="btn btn-outline" onclick="window.openSessionModal('${skill}')">Pilih Sesi Lain</button>`;
-      // Button to go back to chart view
-      extraButtons += `<button class="btn btn-outline" onclick="renderSkillContent(document.getElementById('skill-content'), '${l.id}', '${skill}')">Kembali ke Daftar</button>`;
     } else {
       retryAction = `renderQuiz(document.getElementById('skill-content'), window.__currentLevel)`;
     }
